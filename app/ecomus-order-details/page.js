@@ -18,7 +18,7 @@ export default function Page() {
       tracking: "TRACK123456789"
     },
     subtotal: 279.97,
-    shipping: 10.00,
+    shippingCost: 10.00,
     tax: 22.40,
     total: 312.37
   };
@@ -97,7 +97,7 @@ export default function Page() {
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Shipping:</span>
-                  <span>${order.shipping.toFixed(2)}</span>
+                  <span>${order.shippingCost.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Tax:</span>
