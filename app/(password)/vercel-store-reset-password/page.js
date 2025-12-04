@@ -43,7 +43,13 @@ export default function Page() {
                 <h1 className="text-4xl font-bold mb-2">Reset Password</h1>
                 <p className="text-gray-400">Enter your new password</p>
               </div>
-              <div className="bg-gray-900 rounded-lg border border-gray-800 p-8 space-y-6">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setSubmitted(true);
+                }}
+                className="bg-gray-900 rounded-lg border border-gray-800 p-8 space-y-6"
+              >
                 <div>
                   <label className="block text-sm font-medium mb-2 flex items-center gap-2">
                     <Lock className="w-4 h-4" />
@@ -67,12 +73,12 @@ export default function Page() {
                   />
                 </div>
                 <button
-                  onClick={() => setSubmitted(true)}
+                  type="submit"
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition-colors"
                 >
                   Reset Password
                 </button>
-              </div>
+              </form>
             </>
           ) : (
             <div className="text-center">
