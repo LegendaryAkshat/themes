@@ -60,15 +60,22 @@ export default function Page() {
         
         if (isNumber) {
           const num = parseInt(finalValue.replace(/\D/g, ''));
+          const counterObj = { value: 0 };
           gsap.fromTo(
+            counterObj,
             { value: 0 },
             {
               value: num,
               duration: 2,
               delay: index * 0.2 + 0.5,
               ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+              },
               onUpdate: function() {
-                valueElement.textContent = Math.floor(this.targets()[0].value) + finalValue.replace(/\d/g, '');
+                valueElement.textContent = Math.floor(counterObj.value) + finalValue.replace(/\d/g, '');
               }
             }
           );

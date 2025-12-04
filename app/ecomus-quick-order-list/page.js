@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ShoppingBag, Plus, Minus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export default function Page() {
   const [items, setItems] = useState([
@@ -23,7 +23,9 @@ export default function Page() {
     setItems(items.filter(item => item.id !== id));
   };
 
-  const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const total = useMemo(() => {
+    return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  }, [items]);
 
   return (
     <main className="min-h-screen w-full bg-white">

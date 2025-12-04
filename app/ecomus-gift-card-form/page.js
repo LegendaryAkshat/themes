@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Gift, ShoppingBag, Star } from "lucide-react";
+import { Gift, ShoppingBag, Star, Heart } from "lucide-react";
 import { useState } from "react";
 
 export default function Page() {
