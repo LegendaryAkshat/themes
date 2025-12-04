@@ -29,7 +29,9 @@ import {
   AlertCircle,
   Scale,
   Zap,
-  MoreHorizontal
+  MoreHorizontal,
+  Heart,
+  Users
 } from "lucide-react";
 
 const pageCategories = [
@@ -59,7 +61,7 @@ const pageCategories = [
     ]
   },
   {
-    name: "Categories",
+    name: "Category Sections",
     icon: Layout,
     color: "from-orange-500 to-orange-600",
     pages: [
@@ -168,6 +170,7 @@ const pageCategories = [
       { name: "Product Options Customizer", path: "/ecomus-product-options-customizer" },
       { name: "Advanced Product Types", path: "/ecomus-advanced-product-types" },
       { name: "Gift Card Form", path: "/ecomus-gift-card-form" },
+      { name: "Product Bundles", path: "/ecomus-product-bundles" },
     ]
   },
   {
@@ -193,6 +196,7 @@ const pageCategories = [
       { name: "Pagination Links", path: "/ecomus-shop-pagination-links" },
       { name: "Pagination Load More", path: "/ecomus-shop-pagination-loadmore" },
       { name: "Pagination Infinite", path: "/ecomus-shop-pagination-infinite" },
+      { name: "Pagination Numbers", path: "/ecomus-shop-pagination-numbers" },
     ]
   },
   {
@@ -208,14 +212,111 @@ const pageCategories = [
     ]
   },
   {
+    name: "Home Pages",
+    icon: Home,
+    color: "from-blue-500 to-blue-600",
+    pages: [
+      { name: "Blazity Home", path: "/blazity-home" },
+      { name: "Catalyst Home", path: "/catalyst-home" },
+      { name: "Headless Home", path: "/headless-home" },
+      { name: "Headless Home 2", path: "/headless-home-2" },
+      { name: "Headless Home 3", path: "/headless-home-3" },
+      { name: "Headless Spring", path: "/headless-spring" },
+      { name: "Vercel Store Home", path: "/vercel-store-home" },
+      { name: "Vercel Store Home 2", path: "/vercel-store-home-2" },
+      { name: "Vercel Store Home 3", path: "/vercel-store-home-3" },
+      { name: "Vercel Store Home 4", path: "/vercel-store-home-4" },
+    ]
+  },
+  {
+    name: "Founder Words",
+    icon: FileText,
+    color: "from-purple-500 to-pink-500",
+    pages: [
+      { name: "Founder Words 1", path: "/founder-words-1" },
+      { name: "Founder Words 2", path: "/founder-words-2" },
+      { name: "Founder Words 3", path: "/founder-words-3" },
+      { name: "Founder Words 4", path: "/founder-words-4" },
+    ]
+  },
+  {
+    name: "Our Values",
+    icon: Heart,
+    color: "from-blue-500 to-cyan-500",
+    pages: [
+      { name: "Our Values 1", path: "/our-values-1" },
+      { name: "Our Values 2", path: "/our-values-2" },
+      { name: "Our Values 3", path: "/our-values-3" },
+      { name: "Our Values 4", path: "/our-values-4" },
+    ]
+  },
+  {
+    name: "What We Offer",
+    icon: Gift,
+    color: "from-green-500 to-emerald-500",
+    pages: [
+      { name: "What We Offer 1", path: "/what-we-offer-1" },
+      { name: "What We Offer 2", path: "/what-we-offer-2" },
+      { name: "What We Offer 3", path: "/what-we-offer-3" },
+      { name: "What We Offer 4", path: "/what-we-offer-4" },
+    ]
+  },
+  {
+    name: "Our Team",
+    icon: Users,
+    color: "from-orange-500 to-red-500",
+    pages: [
+      { name: "Our Team 1", path: "/our-team-1" },
+      { name: "Our Team 2", path: "/our-team-2" },
+      { name: "Our Team 3", path: "/our-team-3" },
+      { name: "Our Team 4", path: "/our-team-4" },
+    ]
+  },
+  {
+    name: "Our Belief",
+    icon: Sparkles,
+    color: "from-indigo-500 to-purple-500",
+    pages: [
+      { name: "Our Belief 1", path: "/our-belief-1" },
+      { name: "Our Belief 2", path: "/our-belief-2" },
+      { name: "Our Belief 3", path: "/our-belief-3" },
+      { name: "Our Belief 4", path: "/our-belief-4" },
+    ]
+  },
+  {
     name: "About Pages",
     icon: User,
     color: "from-amber-500 to-amber-600",
     pages: [
       { name: "About 1", path: "/about-1" },
+      { name: "Catalyst About", path: "/catalyst-about" },
       { name: "Ecomus About", path: "/ecomus-about" },
       { name: "Headless About", path: "/headless-about" },
       { name: "Vercel Store About", path: "/vercel-store-about" },
+    ]
+  },
+  {
+    name: "Login Pages",
+    icon: Settings,
+    color: "from-indigo-500 to-indigo-600",
+    pages: [
+      { name: "Blazity Login", path: "/blazity-login" },
+      { name: "Catalyst Login", path: "/catalyst-login" },
+      { name: "Headless Login", path: "/headless-login" },
+      { name: "Headless Login 2", path: "/headless-login-2" },
+      { name: "Vercel Store Login", path: "/vercel-store-login" },
+    ]
+  },
+  {
+    name: "Register & Signup Pages",
+    icon: User,
+    color: "from-purple-500 to-purple-600",
+    pages: [
+      { name: "Blazity Register", path: "/blazity-register" },
+      { name: "Catalyst Register", path: "/catalyst-register" },
+      { name: "Headless Sign Up", path: "/headless-signup" },
+      { name: "Headless Sign Up 2", path: "/headless-signup-2" },
+      { name: "Vercel Store Sign Up", path: "/vercel-store-signup" },
     ]
   },
   {
@@ -224,6 +325,8 @@ const pageCategories = [
     color: "from-teal-500 to-teal-600",
     pages: [
       { name: "Blog 1", path: "/blog-1" },
+      { name: "Catalyst Blog", path: "/catalyst-blog" },
+      { name: "Catalyst Blog Post", path: "/catalyst-blog-post" },
       { name: "Blog Grid", path: "/ecomus-blog" },
       { name: "Blog Left Sidebar", path: "/ecomus-blog-left-sidebar" },
       { name: "Blog Right Sidebar", path: "/ecomus-blog-right-sidebar" },
@@ -241,6 +344,7 @@ const pageCategories = [
     pages: [
       { name: "Contact 1", path: "/contact-1" },
       { name: "Contact 2", path: "/contact-2" },
+      { name: "Catalyst Contact", path: "/catalyst-contact" },
       { name: "Ecomus Contact 1", path: "/ecomus-contact-1" },
       { name: "Ecomus Contact 2", path: "/ecomus-contact-2" },
     ]
@@ -251,6 +355,7 @@ const pageCategories = [
     color: "from-yellow-500 to-yellow-600",
     pages: [
       { name: "FAQ 1", path: "/faq-1" },
+      { name: "Catalyst FAQ", path: "/catalyst-faq" },
       { name: "FAQ 01", path: "/ecomus-faq-01" },
       { name: "FAQ 02", path: "/ecomus-faq-02" },
       { name: "Headless FAQ", path: "/headless-faq" },
@@ -264,6 +369,7 @@ const pageCategories = [
     pages: [
       { name: "Newsletter 1", path: "/newsletter-1" },
       { name: "Newsletter 2", path: "/newsletter-2" },
+      { name: "Newsletter 3", path: "/newsletter-3" },
       { name: "Ecomus Newsletter", path: "/ecomus-newsletter" },
     ]
   },
@@ -274,6 +380,7 @@ const pageCategories = [
     pages: [
       { name: "Testimonials 1", path: "/testimonials-1" },
       { name: "Testimonials 2", path: "/testimonials-2" },
+      { name: "Testimonials 3", path: "/testimonials-3" },
       { name: "Ecomus Testimonials", path: "/ecomus-testimonials" },
     ]
   },
@@ -284,19 +391,43 @@ const pageCategories = [
     pages: [
       { name: "Footer 1", path: "/footer-1" },
       { name: "Footer 2", path: "/footer-2" },
+      { name: "Footer 3", path: "/footer-3" },
       { name: "Ecomus Footer", path: "/ecomus-footer" },
     ]
   },
   {
-    name: "Checkout Flow",
+    name: "Cart Pages",
     icon: ShoppingCart,
     color: "from-rose-500 to-rose-600",
     pages: [
-      { name: "Cart", path: "/ecomus-cart" },
-      { name: "Checkout", path: "/ecomus-checkout" },
-      { name: "Payment Confirmation", path: "/ecomus-payment-confirmation" },
-      { name: "Payment Failure", path: "/ecomus-payment-failure" },
-      { name: "Buy Now", path: "/ecomus-buy-now" },
+      { name: "Blazity Cart", path: "/blazity-cart" },
+      { name: "Catalyst Cart", path: "/catalyst-cart" },
+      { name: "Ecomus Cart", path: "/ecomus-cart" },
+      { name: "Headless Cart", path: "/headless-cart" },
+      { name: "Vercel Store Cart", path: "/vercel-store-cart" },
+    ]
+  },
+  {
+    name: "Checkout Pages",
+    icon: CreditCard,
+    color: "from-pink-500 to-pink-600",
+    pages: [
+      { name: "Blazity Checkout", path: "/blazity-checkout" },
+      { name: "Blazity Checkout Success", path: "/blazity-checkout-success" },
+      { name: "Blazity Checkout Cancelled", path: "/blazity-checkout-cancelled" },
+      { name: "Catalyst Checkout", path: "/catalyst-checkout" },
+      { name: "Catalyst Checkout Success", path: "/catalyst-checkout-success" },
+      { name: "Catalyst Checkout Cancelled", path: "/catalyst-checkout-cancelled" },
+      { name: "Ecomus Checkout", path: "/ecomus-checkout" },
+      { name: "Ecomus Payment Confirmation", path: "/ecomus-payment-confirmation" },
+      { name: "Ecomus Payment Failure", path: "/ecomus-payment-failure" },
+      { name: "Ecomus Buy Now", path: "/ecomus-buy-now" },
+      { name: "Headless Checkout", path: "/headless-checkout" },
+      { name: "Headless Checkout Success", path: "/headless-checkout-success" },
+      { name: "Headless Checkout Failure", path: "/headless-checkout-failure" },
+      { name: "Vercel Store Checkout", path: "/vercel-store-checkout" },
+      { name: "Vercel Store Checkout Success", path: "/vercel-store-checkout-success" },
+      { name: "Vercel Store Checkout Cancelled", path: "/vercel-store-checkout-cancelled" },
     ]
   },
   {
@@ -304,17 +435,36 @@ const pageCategories = [
     icon: User,
     color: "from-amber-500 to-amber-600",
     pages: [
-      { name: "My Account", path: "/ecomus-account" },
-      { name: "My Orders", path: "/ecomus-my-orders" },
-      { name: "Order Details", path: "/ecomus-order-details" },
-      { name: "My Addresses", path: "/ecomus-my-addresses" },
-      { name: "Add Address", path: "/ecomus-add-address" },
-      { name: "My Account Details", path: "/ecomus-my-account-details" },
-      { name: "Wishlist", path: "/ecomus-wishlist" },
-      { name: "Payment Methods", path: "/ecomus-payment-methods" },
-      { name: "Edit Payment Method", path: "/ecomus-edit-payment-method" },
-      { name: "Support Tickets", path: "/ecomus-support-tickets" },
-      { name: "Ticket Details", path: "/ecomus-ticket-details" },
+      { name: "Blazity Account", path: "/blazity-account" },
+      { name: "Blazity Account Orders", path: "/blazity-account-orders" },
+      { name: "Blazity Account Order Detail", path: "/blazity-account-order-detail" },
+      { name: "Blazity Account Profile", path: "/blazity-account-profile" },
+      { name: "Blazity Account Addresses", path: "/blazity-account-addresses" },
+      { name: "Catalyst Account", path: "/catalyst-account" },
+      { name: "Catalyst Account Orders", path: "/catalyst-account-orders" },
+      { name: "Catalyst Account Order Detail", path: "/catalyst-account-order-detail" },
+      { name: "Catalyst Account Addresses", path: "/catalyst-account-addresses" },
+      { name: "Catalyst Account Profile", path: "/catalyst-account-profile" },
+      { name: "Ecomus Account", path: "/ecomus-account" },
+      { name: "Ecomus My Orders", path: "/ecomus-my-orders" },
+      { name: "Ecomus Order Details", path: "/ecomus-order-details" },
+      { name: "Ecomus My Addresses", path: "/ecomus-my-addresses" },
+      { name: "Ecomus Add Address", path: "/ecomus-add-address" },
+      { name: "Ecomus My Account Details", path: "/ecomus-my-account-details" },
+      { name: "Ecomus Wishlist", path: "/ecomus-wishlist" },
+      { name: "Ecomus Payment Methods", path: "/ecomus-payment-methods" },
+      { name: "Ecomus Edit Payment Method", path: "/ecomus-edit-payment-method" },
+      { name: "Ecomus Support Tickets", path: "/ecomus-support-tickets" },
+      { name: "Ecomus Ticket Details", path: "/ecomus-ticket-details" },
+      { name: "Headless Account", path: "/headless-account" },
+      { name: "Headless Account Orders", path: "/headless-account-orders" },
+      { name: "Headless Account Order Detail", path: "/headless-account-order-detail" },
+      { name: "Headless Account Addresses", path: "/headless-account-addresses" },
+      { name: "Vercel Store Account", path: "/vercel-store-account" },
+      { name: "Vercel Store Account Orders", path: "/vercel-store-account-orders" },
+      { name: "Vercel Store Account Profile", path: "/vercel-store-account-profile" },
+      { name: "Vercel Store Account Addresses", path: "/vercel-store-account-addresses" },
+      { name: "Vercel Store Account Wishlist", path: "/vercel-store-account-wishlist" },
     ]
   },
   {
@@ -324,6 +474,8 @@ const pageCategories = [
     pages: [
       { name: "Music 1", path: "/music-1" },
       { name: "Music 2", path: "/music-2" },
+      { name: "Music 3", path: "/music-3" },
+      { name: "Music 4", path: "/music-4" },
     ]
   },
   {
@@ -332,6 +484,9 @@ const pageCategories = [
     color: "from-indigo-500 to-indigo-600",
     pages: [
       { name: "Features 1", path: "/features-1" },
+      { name: "Features 2", path: "/features-2" },
+      { name: "Features 3", path: "/features-3" },
+      { name: "Features 4", path: "/features-4" },
     ]
   },
   {
@@ -340,6 +495,9 @@ const pageCategories = [
     color: "from-slate-500 to-slate-600",
     pages: [
       { name: "Breadcrumb 1", path: "/breadcrumb-1" },
+      { name: "Breadcrumb 2", path: "/breadcrumb-2" },
+      { name: "Breadcrumb 3", path: "/breadcrumb-3" },
+      { name: "Breadcrumb 4", path: "/breadcrumb-4" },
     ]
   },
   {
@@ -347,13 +505,15 @@ const pageCategories = [
     icon: AlertCircle,
     color: "from-red-500 to-red-600",
     pages: [
-      { name: "Ecomus 404", path: "/ecomus-404" },
-      { name: "Headless 404", path: "/headless-404" },
-      { name: "Headless 500", path: "/headless-500" },
-      { name: "Vercel Store 404", path: "/vercel-store-404" },
-      { name: "Catalyst 404", path: "/catalyst-404" },
       { name: "Blazity 404", path: "/blazity-404" },
       { name: "Blazity 500", path: "/blazity-500" },
+      { name: "Catalyst 404", path: "/catalyst-404" },
+      { name: "Ecomus 404", path: "/ecomus-404" },
+      { name: "Headless 403", path: "/headless-403" },
+      { name: "Headless 404", path: "/headless-404" },
+      { name: "Headless 500", path: "/headless-500" },
+      { name: "Headless 503", path: "/headless-503" },
+      { name: "Vercel Store 404", path: "/vercel-store-404" },
     ]
   },
   {
@@ -361,12 +521,14 @@ const pageCategories = [
     icon: Scale,
     color: "from-slate-600 to-slate-700",
     pages: [
+      { name: "Catalyst Privacy Policy", path: "/catalyst-privacy" },
+      { name: "Catalyst Terms of Service", path: "/catalyst-terms" },
       { name: "Ecomus Terms", path: "/ecomus-terms" },
+      { name: "Headless Privacy Policy", path: "/headless-privacy" },
+      { name: "Headless Terms of Use", path: "/headless-terms" },
       { name: "Vercel Store Terms", path: "/vercel-store-terms" },
       { name: "Vercel Store Privacy", path: "/vercel-store-privacy" },
       { name: "Vercel Store Shipping & Return", path: "/vercel-store-shipping-return" },
-      { name: "Headless Privacy Policy", path: "/headless-privacy" },
-      { name: "Headless Terms of Use", path: "/headless-terms" },
     ]
   },
   {
@@ -383,234 +545,75 @@ const pageCategories = [
     ]
   },
   {
-    name: "Vercel Store - Home",
-    icon: Home,
-    color: "from-emerald-500 to-emerald-600",
-    pages: [
-      { name: "Home", path: "/vercel-store-home" },
-    ]
-  },
-  {
-    name: "Vercel Store - Product Pages",
+    name: "Product Detail Pages",
     icon: ShoppingBag,
     color: "from-green-500 to-green-600",
     pages: [
-      { name: "Product Detail", path: "/vercel-store-product-detail" },
-      { name: "Search", path: "/vercel-store-search" },
+      { name: "Blazity Product Detail", path: "/blazity-product-detail" },
+      { name: "Catalyst Product Detail", path: "/catalyst-product-detail" },
+      { name: "Headless Product Detail", path: "/headless-product-detail" },
+      { name: "Vercel Store Product Detail", path: "/vercel-store-product-detail" },
     ]
   },
   {
-    name: "Vercel Store - Cart & Checkout",
-    icon: ShoppingCart,
-    color: "from-rose-500 to-rose-600",
-    pages: [
-      { name: "Cart", path: "/vercel-store-cart" },
-      { name: "Checkout", path: "/vercel-store-checkout" },
-      { name: "Checkout Success", path: "/vercel-store-checkout-success" },
-      { name: "Checkout Cancelled", path: "/vercel-store-checkout-cancelled" },
-    ]
-  },
-  {
-    name: "Vercel Store - Account Pages",
-    icon: User,
-    color: "from-amber-500 to-amber-600",
-    pages: [
-      { name: "My Account", path: "/vercel-store-account" },
-      { name: "My Orders", path: "/vercel-store-account-orders" },
-      { name: "Account Profile", path: "/vercel-store-account-profile" },
-      { name: "My Addresses", path: "/vercel-store-account-addresses" },
-      { name: "Wishlist", path: "/vercel-store-account-wishlist" },
-    ]
-  },
-  {
-    name: "Vercel Store - Auth",
-    icon: Settings,
-    color: "from-cyan-500 to-cyan-600",
-    pages: [
-      { name: "Login", path: "/vercel-store-login" },
-      { name: "Sign Up", path: "/vercel-store-signup" },
-    ]
-  },
-  {
-    name: "Headless Builders - Home",
-    icon: Home,
-    color: "from-slate-500 to-slate-600",
-    pages: [
-      { name: "Home", path: "/headless-home" },
-      { name: "Spring", path: "/headless-spring" },
-    ]
-  },
-  {
-    name: "Headless Builders - Product Pages",
-    icon: ShoppingBag,
-    color: "from-gray-500 to-gray-600",
-    pages: [
-      { name: "Product Detail", path: "/headless-product-detail" },
-      { name: "Collection", path: "/headless-collection" },
-      { name: "Search", path: "/headless-search" },
-    ]
-  },
-  {
-    name: "Headless Builders - Cart & Checkout",
-    icon: ShoppingCart,
-    color: "from-neutral-500 to-neutral-600",
-    pages: [
-      { name: "Cart", path: "/headless-cart" },
-      { name: "Checkout", path: "/headless-checkout" },
-      { name: "Checkout Success", path: "/headless-checkout-success" },
-      { name: "Checkout Failure", path: "/headless-checkout-failure" },
-    ]
-  },
-  {
-    name: "Headless Builders - Account Pages",
-    icon: User,
-    color: "from-zinc-500 to-zinc-600",
-    pages: [
-      { name: "My Account", path: "/headless-account" },
-      { name: "My Orders", path: "/headless-account-orders" },
-      { name: "Order Details", path: "/headless-account-order-detail" },
-      { name: "My Addresses", path: "/headless-account-addresses" },
-    ]
-  },
-  {
-    name: "Headless Builders - Auth",
-    icon: FileText,
-    color: "from-stone-500 to-stone-600",
-    pages: [
-      { name: "Login", path: "/headless-login" },
-      { name: "Sign Up", path: "/headless-signup" },
-    ]
-  },
-  {
-    name: "Headless Builders - Utility Pages",
-    icon: Settings,
-    color: "from-gray-400 to-gray-500",
-    pages: [
-      { name: "404 Page", path: "/headless-404" },
-      { name: "500 Page", path: "/headless-500" },
-    ]
-  },
-  {
-    name: "Catalyst - Home & Navigation",
-    icon: Home,
-    color: "from-green-500 to-green-600",
-    pages: [
-      { name: "Home", path: "/catalyst-home" },
-      { name: "Category Page", path: "/catalyst-category" },
-      { name: "Brand Page", path: "/catalyst-brand" },
-      { name: "Search", path: "/catalyst-search" },
-    ]
-  },
-  {
-    name: "Catalyst - Products",
-    icon: ShoppingBag,
+    name: "Product List & Grid Pages",
+    icon: Package,
     color: "from-emerald-500 to-emerald-600",
     pages: [
-      { name: "Product Detail", path: "/catalyst-product-detail" },
+      { name: "Blazity Product Grid", path: "/blazity-product-grid" },
+      { name: "Blazity Product List", path: "/blazity-product-list" },
+      { name: "Catalyst Product Grid", path: "/catalyst-product-grid" },
+      { name: "Catalyst Product List", path: "/catalyst-product-list" },
+      { name: "Headless Product List", path: "/headless-product-list" },
+      { name: "Vercel Store Product Grid", path: "/vercel-store-product-grid" },
+      { name: "Vercel Store Product List", path: "/vercel-store-product-list" },
     ]
   },
   {
-    name: "Catalyst - Cart & Checkout",
-    icon: ShoppingCart,
+    name: "Product Compare Pages",
+    icon: ShoppingBag,
     color: "from-teal-500 to-teal-600",
     pages: [
-      { name: "Cart", path: "/catalyst-cart" },
-      { name: "Checkout", path: "/catalyst-checkout" },
-      { name: "Checkout Success", path: "/catalyst-checkout-success" },
-      { name: "Checkout Cancelled", path: "/catalyst-checkout-cancelled" },
+      { name: "Blazity Product Compare", path: "/blazity-product-compare" },
+      { name: "Catalyst Product Compare", path: "/catalyst-product-compare" },
     ]
   },
   {
-    name: "Catalyst - Account Pages",
-    icon: User,
-    color: "from-lime-500 to-lime-600",
+    name: "Category & Collection Pages",
+    icon: Layout,
+    color: "from-orange-500 to-orange-600",
     pages: [
-      { name: "My Account", path: "/catalyst-account" },
-      { name: "My Orders", path: "/catalyst-account-orders" },
-      { name: "Order Details", path: "/catalyst-account-order-detail" },
-      { name: "My Addresses", path: "/catalyst-account-addresses" },
-      { name: "Payment Methods", path: "/catalyst-account-profile" },
+      { name: "Blazity Category", path: "/blazity-category" },
+      { name: "Catalyst Category", path: "/catalyst-category" },
+      { name: "Headless Collection", path: "/headless-collection" },
     ]
   },
   {
-    name: "Catalyst - Auth",
+    name: "Search Pages",
+    icon: Globe,
+    color: "from-cyan-500 to-cyan-600",
+    pages: [
+      { name: "Blazity Search", path: "/blazity-search" },
+      { name: "Catalyst Search", path: "/catalyst-search" },
+      { name: "Headless Search", path: "/headless-search" },
+      { name: "Vercel Store Search", path: "/vercel-store-search" },
+    ]
+  },
+  {
+    name: "Brand Pages",
+    icon: Tag,
+    color: "from-violet-500 to-violet-600",
+    pages: [
+      { name: "Catalyst Brand", path: "/catalyst-brand" },
+    ]
+  },
+  {
+    name: "Password Pages",
     icon: Settings,
-    color: "from-green-400 to-green-500",
+    color: "from-slate-500 to-slate-600",
     pages: [
-      { name: "Login", path: "/catalyst-login" },
-      { name: "Register", path: "/catalyst-register" },
-    ]
-  },
-  {
-    name: "Catalyst - Content Pages",
-    icon: BookOpen,
-    color: "from-green-600 to-green-700",
-    pages: [
-      { name: "Blog", path: "/catalyst-blog" },
-      { name: "Blog Post", path: "/catalyst-blog-post" },
-      { name: "About", path: "/catalyst-about" },
-      { name: "Contact", path: "/catalyst-contact" },
-      { name: "FAQ", path: "/catalyst-faq" },
-    ]
-  },
-  {
-    name: "Catalyst - Legal & Utility",
-    icon: FileText,
-    color: "from-green-700 to-green-800",
-    pages: [
-      { name: "Privacy Policy", path: "/catalyst-privacy" },
-      { name: "Terms of Service", path: "/catalyst-terms" },
-      { name: "404 Page", path: "/catalyst-404" },
-    ]
-  },
-  {
-    name: "Blazity - Home & Navigation",
-    icon: Home,
-    color: "from-blue-500 to-blue-600",
-    pages: [
-      { name: "Home", path: "/blazity-home" },
-      { name: "Category Page", path: "/blazity-category" },
-      { name: "Search", path: "/blazity-search" },
-    ]
-  },
-  {
-    name: "Blazity - Products",
-    icon: ShoppingBag,
-    color: "from-indigo-500 to-indigo-600",
-    pages: [
-      { name: "Product Detail", path: "/blazity-product-detail" },
-    ]
-  },
-  {
-    name: "Blazity - Cart & Checkout",
-    icon: ShoppingCart,
-    color: "from-purple-500 to-purple-600",
-    pages: [
-      { name: "Cart", path: "/blazity-cart" },
-      { name: "Checkout", path: "/blazity-checkout" },
-      { name: "Checkout Success", path: "/blazity-checkout-success" },
-      { name: "Checkout Cancelled", path: "/blazity-checkout-cancelled" },
-    ]
-  },
-  {
-    name: "Blazity - Account Pages",
-    icon: User,
-    color: "from-pink-500 to-pink-600",
-    pages: [
-      { name: "My Account", path: "/blazity-account" },
-      { name: "My Orders", path: "/blazity-account-orders" },
-      { name: "Order Details", path: "/blazity-account-order-detail" },
-      { name: "Profile", path: "/blazity-account-profile" },
-      { name: "My Addresses", path: "/blazity-account-addresses" },
-    ]
-  },
-  {
-    name: "Blazity - Auth",
-    icon: Settings,
-    color: "from-blue-400 to-blue-500",
-    pages: [
-      { name: "Login", path: "/blazity-login" },
-      { name: "Register", path: "/blazity-register" },
+      { name: "Vercel Store Forgot Password", path: "/vercel-store-forgot-password" },
+      { name: "Vercel Store Reset Password", path: "/vercel-store-reset-password" },
     ]
   },
 ];
