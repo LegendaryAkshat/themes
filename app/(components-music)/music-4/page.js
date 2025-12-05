@@ -4,11 +4,37 @@ import { motion } from "framer-motion";
 import { Play, Clock, Heart, MoreVertical } from "lucide-react";
 import { useState } from "react";
 
-export default function Page() {
-  const [playingId, setPlayingId] = useState(null);
-  const [likedSongs, setLikedSongs] = useState(new Set());
-
-  const playlist = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900",
+    card: "bg-white/10 backdrop-blur-xl",
+    text: {
+      primary: "text-white",
+      secondary: "text-purple-200"
+    },
+    borders: {
+      default: "border-white/20",
+      divider: "border-white/10"
+    },
+    buttons: {
+      primary: "bg-white/10 hover:bg-white/20",
+      liked: "text-pink-400",
+      default: "text-purple-200 hover:text-pink-400"
+    }
+  },
+  
+  // Page Header
+  header: {
+    title: "Music Playlist",
+    description: "Discover and enjoy your favorite tracks in a beautifully designed playlist interface"
+  },
+  
+  // Playlist (Edit playlist here!)
+  playlist: [
     {
       id: 1,
       title: "Midnight Serenade",
@@ -51,7 +77,13 @@ export default function Page() {
       duration: "3:17",
       album: "Galaxy"
     }
-  ];
+  ]
+};
+
+export default function Page() {
+  const [playingId, setPlayingId] = useState(null);
+  const [likedSongs, setLikedSongs] = useState(new Set());
+  const { colors, header, playlist } = pageConfig;
 
   const toggleLike = (id) => {
     setLikedSongs((prev) => {
@@ -66,7 +98,7 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 text-white">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -74,11 +106,11 @@ export default function Page() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Music Playlist
+          <h1 className={`text-4xl md:text-5xl font-bold mb-4`}>
+            {header.title}
           </h1>
-          <p className="text-lg text-purple-200 max-w-2xl">
-            Discover and enjoy your favorite tracks in a beautifully designed playlist interface
+          <p className={`text-lg ${colors.text.secondary} max-w-2xl`}>
+            {header.description}
           </p>
         </motion.div>
 
@@ -86,10 +118,9 @@ export default function Page() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+          className={`${colors.card} rounded-3xl shadow-2xl ${colors.borders.default} overflow-hidden`}
         >
-          {/* Header */}
-          <div className="p-6 border-b border-white/10">
+          <div className={`p-6 ${colors.borders.divider}`}>
             <div className="grid grid-cols-12 gap-4 text-sm text-purple-200 font-semibold">
               <div className="col-span-1">#</div>
               <div className="col-span-5">Title</div>
@@ -101,8 +132,7 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Playlist Items */}
-          <div className="divide-y divide-white/10">
+          <div className={`divide-y ${colors.borders.divider}`}>
             {playlist.map((song, index) => (
               <motion.div
                 key={song.id}
@@ -127,21 +157,21 @@ export default function Page() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setPlayingId(playingId === song.id ? null : song.id)}
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100"
+                    className={`w-10 h-10 rounded-full ${colors.buttons.primary} flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100`}
                   >
                     <Play className="w-4 h-4 ml-0.5" />
                   </motion.button>
                   <div>
                     <div className="font-semibold text-white">{song.title}</div>
-                    <div className="text-sm text-purple-200">{song.artist}</div>
+                    <div className={`text-sm ${colors.text.secondary}`}>{song.artist}</div>
                   </div>
                 </div>
 
-                <div className="col-span-3 hidden md:block text-purple-200 text-sm">
+                <div className={`col-span-3 hidden md:block ${colors.text.secondary} text-sm`}>
                   {song.album}
                 </div>
 
-                <div className="col-span-2 text-right text-purple-200 text-sm">
+                <div className={`col-span-2 text-right ${colors.text.secondary} text-sm`}>
                   {song.duration}
                 </div>
 
@@ -151,9 +181,7 @@ export default function Page() {
                     whileTap={{ scale: 0.9 }}
                     onClick={() => toggleLike(song.id)}
                     className={`p-2 rounded-full transition-colors ${
-                      likedSongs.has(song.id)
-                        ? "text-pink-400"
-                        : "text-purple-200 hover:text-pink-400"
+                      likedSongs.has(song.id) ? colors.buttons.liked : colors.buttons.default
                     }`}
                   >
                     <Heart
@@ -161,7 +189,7 @@ export default function Page() {
                       fill={likedSongs.has(song.id) ? "currentColor" : "none"}
                     />
                   </motion.button>
-                  <button className="p-2 rounded-full text-purple-200 hover:text-white transition-colors opacity-0 group-hover:opacity-100">
+                  <button className={`p-2 rounded-full ${colors.buttons.default} transition-colors opacity-0 group-hover:opacity-100`}>
                     <MoreVertical className="w-4 h-4" />
                   </button>
                 </div>
@@ -173,4 +201,3 @@ export default function Page() {
     </main>
   );
 }
-

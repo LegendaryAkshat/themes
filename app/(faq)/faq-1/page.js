@@ -10,11 +10,33 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function Page() {
-  const sectionRef = useRef(null);
-  const [openIndex, setOpenIndex] = useState(0);
-
-  const faqs = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    borders: {
+      default: "border-gray-200"
+    },
+    buttons: {
+      hover: "hover:bg-gray-50"
+    }
+  },
+  
+  // Page Header
+  page: {
+    title: "Frequently Asked Questions"
+  },
+  
+  // FAQs (Edit FAQs here!)
+  faqs: [
     {
       question: "What payment methods do you accept?",
       answer: "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay, and bank transfers. All transactions are secured with SSL encryption for your safety."
@@ -47,7 +69,13 @@ export default function Page() {
       question: "Do you offer customer support?",
       answer: "Yes! Our customer support team is available 24/7 via live chat, email, and phone. We're here to help with any questions, concerns, or assistance you may need with your order or account."
     }
-  ];
+  ]
+};
+
+export default function Page() {
+  const sectionRef = useRef(null);
+  const [openIndex, setOpenIndex] = useState(0);
+  const { colors, page, faqs } = pageConfig;
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -80,17 +108,13 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-gray-50 via-white to-purple-50/30 text-gray-900">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary}`}>
       <motion.section
         ref={sectionRef}
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
         className="px-6 py-24 max-w-4xl mx-auto"
       >
-        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
@@ -101,99 +125,63 @@ export default function Page() {
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, type: "spring" }}
-            className="inline-block mb-4"
+            className="inline-block p-4 bg-blue-100 rounded-full mb-4"
           >
-            <HelpCircle className="w-16 h-16 text-purple-600 mx-auto" />
+            <HelpCircle className="w-12 h-12 text-blue-600" />
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="text-4xl md:text-6xl font-bold text-slate-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600"
+            className={`text-4xl md:text-5xl font-bold ${colors.text.primary} mb-4`}
           >
-            Frequently Asked Questions
+            {page.title}
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="text-gray-600 text-lg"
-          >
-            Find answers to common questions about our products, services, and policies
-          </motion.p>
         </motion.div>
 
-        {/* FAQ Items */}
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
-              className="faq-item bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
-              whileHover={{ scale: 1.02 }}
+              className="faq-item"
             >
-              <motion.button
-                onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left group"
-                whileHover={{ x: 5 }}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`${colors.card} rounded-lg shadow-md overflow-hidden`}
               >
-                <span className="text-lg font-semibold text-slate-800 group-hover:text-purple-600 transition-colors pr-4">
-                  {faq.question}
-                </span>
-                <motion.div
-                  animate={{ rotate: openIndex === index ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex-shrink-0"
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
+                  className={`w-full px-6 py-4 flex items-center justify-between ${colors.buttons.hover} transition-colors`}
                 >
-                  <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-purple-600 transition-colors" />
-                </motion.div>
-              </motion.button>
-              
-              <AnimatePresence>
-                {openIndex === index && (
+                  <span className={`font-semibold ${colors.text.primary} text-left`}>{faq.question}</span>
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
+                    animate={{ rotate: openIndex === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
                   >
-                    <div className="px-6 pb-5 text-gray-600 leading-relaxed">
-                      {faq.answer}
-                    </div>
+                    <ChevronDown className={`w-5 h-5 ${colors.text.secondary}`} />
                   </motion.div>
-                )}
-              </AnimatePresence>
+                </button>
+                <AnimatePresence>
+                  {openIndex === index && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="px-6 pb-4"
+                    >
+                      <p className={`${colors.text.secondary} leading-relaxed`}>{faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             </motion.div>
           ))}
         </div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="text-center mt-12"
-        >
-          <p className="text-gray-600 mb-4">Still have questions?</p>
-          <motion.a
-            href="#"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
-          >
-            Contact Support
-          </motion.a>
-        </motion.div>
       </motion.section>
     </main>
   );
 }
-
-
-
-
-
-

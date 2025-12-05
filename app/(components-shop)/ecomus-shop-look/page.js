@@ -3,27 +3,55 @@
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
 
-export default function Page() {
-  const looks = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    card: "bg-white/90 backdrop-blur-sm",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    gradients: {
+      image: "bg-gradient-to-br from-gray-100 to-gray-200",
+      price: "text-blue-600"
+    }
+  },
+  
+  // Page Header
+  header: {
+    title: "Shop the look",
+    description: "Inspire and let yourself be inspired, from one unique fashion to another."
+  },
+  
+  // Looks (Edit looks here!)
+  looks: [
     {
       id: 1,
       items: [
-        { name: "Jersey thong body", price: 112.00 },
-        { name: "Ribbed modal T-shirt", price: 20.00 }
+        { name: "Jersey thong body", price: 112.00, link: "/ecomus-product-detail" },
+        { name: "Ribbed modal T-shirt", price: 20.00, link: "/ecomus-product-detail" }
       ],
       image: "👗"
     },
     {
       id: 2,
       items: [
-        { name: "Ribbed Tank Top", price: 20.00 }
+        { name: "Ribbed Tank Top", price: 20.00, link: "/ecomus-product-detail" }
       ],
       image: "👕"
     }
-  ];
+  ]
+};
+
+export default function Page() {
+  const { colors, header, looks } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -32,11 +60,11 @@ export default function Page() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Shop the look
+          <h2 className={`text-3xl md:text-4xl font-bold ${colors.text.primary} mb-4`}>
+            {header.title}
           </h2>
-          <p className="text-gray-600 text-lg">
-            Inspire and let yourself be inspired, from one unique fashion to another.
+          <p className={`${colors.text.secondary} text-lg`}>
+            {header.description}
           </p>
         </motion.div>
 
@@ -50,13 +78,11 @@ export default function Page() {
               transition={{ delay: index * 0.2, duration: 0.6 }}
               className="relative group"
             >
-              {/* Lookbook Image */}
-              <div className="relative aspect-[4/5] bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden">
+              <div className={`relative aspect-[4/5] ${colors.gradients.image} rounded-2xl overflow-hidden`}>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-9xl">{look.image}</div>
                 </div>
 
-                {/* Product Items Overlay */}
                 <div className="absolute inset-0 p-6">
                   {look.items.map((item, itemIndex) => (
                     <motion.div
@@ -71,17 +97,18 @@ export default function Page() {
                         left: "10%"
                       }}
                     >
-                      <motion.div
+                      <motion.a
+                        href={item.link}
                         whileHover={{ scale: 1.05 }}
-                        className="bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg cursor-pointer group/item"
+                        className={`${colors.card} rounded-lg p-3 shadow-lg cursor-pointer group/item`}
                       >
-                        <p className="text-sm font-semibold text-gray-900 mb-1">
+                        <p className={`text-sm font-semibold ${colors.text.primary} mb-1`}>
                           {item.name}
                         </p>
-                        <p className="text-lg font-bold text-blue-600">
+                        <p className={`text-lg font-bold ${colors.gradients.price}`}>
                           ${item.price.toFixed(2)}
                         </p>
-                      </motion.div>
+                      </motion.a>
                     </motion.div>
                   ))}
                 </div>
@@ -93,4 +120,3 @@ export default function Page() {
     </main>
   );
 }
-

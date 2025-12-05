@@ -4,15 +4,67 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Check, Star } from "lucide-react";
 import { useState, useMemo } from "react";
 
-export default function Page() {
-  const [selectedItems, setSelectedItems] = useState(new Set([1]));
-
-  const products = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    borders: {
+      selected: "border-blue-600 bg-blue-50",
+      unselected: "border-gray-200 hover:border-gray-300"
+    },
+    buttons: {
+      primary: "bg-blue-600 hover:bg-blue-700 text-white"
+    },
+    gradients: {
+      image: "bg-gradient-to-br from-gray-100 to-gray-200",
+      check: "bg-blue-600"
+    },
+    badges: {
+      required: "text-gray-500",
+      savings: "text-green-600",
+      rating: "fill-yellow-400 text-yellow-400"
+    }
+  },
+  
+  // Page Header
+  header: {
+    title: "Frequently Bought Together 2",
+    subtitle: "Complete Your Purchase"
+  },
+  
+  // Products (Edit products here!)
+  products: [
     { id: 1, name: "Main Product", price: 99.99, required: true, rating: 4.5 },
     { id: 2, name: "Accessory Pack", price: 49.99, required: false, rating: 4.7 },
     { id: 3, name: "Protection Plan", price: 29.99, required: false, rating: 4.6 },
     { id: 4, name: "Extended Warranty", price: 39.99, required: false, rating: 4.8 }
-  ];
+  ],
+  
+  // Pricing
+  pricing: {
+    discountMultiplier: 1.15
+  },
+  
+  // Actions
+  actions: {
+    addToCart: {
+      text: "Add All to Cart",
+      icon: "ShoppingBag"
+    }
+  }
+};
+
+export default function Page() {
+  const [selectedItems, setSelectedItems] = useState(new Set([1]));
+  const { colors, header, products, pricing, actions } = pageConfig;
 
   const toggleItem = (id) => {
     if (products.find(p => p.id === id)?.required) return;
@@ -26,21 +78,27 @@ export default function Page() {
     return products
       .filter(p => selectedItems.has(p.id))
       .reduce((sum, p) => sum + p.price, 0);
-  }, [selectedItems]);
+  }, [selectedItems, products]);
+
+  const iconMap = {
+    ShoppingBag,
+    Check,
+    Star
+  };
 
   return (
-    <main className="min-h-screen w-full bg-gray-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold text-gray-900 mb-8"
+          className={`text-3xl font-bold ${colors.text.primary} mb-8`}
         >
-          Frequently Bought Together 2
+          {header.title}
         </motion.h1>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Your Purchase</h2>
+        <div className={`${colors.card} rounded-2xl shadow-lg p-8`}>
+          <h2 className={`text-2xl font-bold ${colors.text.primary} mb-6`}>{header.subtitle}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {products.map((product, index) => (
               <motion.div
@@ -50,8 +108,8 @@ export default function Page() {
                 transition={{ delay: index * 0.1 }}
                 className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${
                   selectedItems.has(product.id)
-                    ? "border-blue-600 bg-blue-50"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? colors.borders.selected
+                    : colors.borders.unselected
                 } ${product.required ? "opacity-100" : ""}`}
                 onClick={() => toggleItem(product.id)}
               >
@@ -61,54 +119,57 @@ export default function Page() {
                   </div>
                 )}
                 {selectedItems.has(product.id) && (
-                  <div className="absolute top-2 right-2 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                  <div className={`absolute top-2 right-2 w-6 h-6 ${colors.gradients.check} rounded-full flex items-center justify-center`}>
                     <Check className="w-4 h-4 text-white" />
                   </div>
                 )}
-                <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg mb-3">
+                <div className={`aspect-square ${colors.gradients.image} rounded-lg mb-3`}>
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="w-20 h-20 bg-gray-300 rounded"></div>
                   </div>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{product.name}</h3>
+                <h3 className={`font-semibold ${colors.text.primary} mb-2`}>{product.name}</h3>
                 <div className="flex items-center gap-1 mb-2">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
                       className={`w-3 h-3 ${
-                        i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                        i < Math.floor(product.rating) ? colors.badges.rating : "text-gray-300"
                       }`}
                     />
                   ))}
                 </div>
-                <p className="text-lg font-bold text-gray-900">${product.price.toFixed(2)}</p>
+                <p className={`text-lg font-bold ${colors.text.primary}`}>${product.price.toFixed(2)}</p>
                 {product.required && (
-                  <p className="text-xs text-gray-500 mt-1">Required</p>
+                  <p className={`text-xs ${colors.badges.required} mt-1`}>Required</p>
                 )}
               </motion.div>
             ))}
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
+          <div className={`border-t border-gray-200 pt-6`}>
             <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="text-gray-600">Total Price:</p>
-                <p className="text-3xl font-bold text-gray-900">${total.toFixed(2)}</p>
-                <p className="text-sm text-gray-500 line-through mt-1">
-                  ${(total * 1.15).toFixed(2)}
+                <p className={colors.text.secondary}>Total Price:</p>
+                <p className={`text-3xl font-bold ${colors.text.primary}`}>${total.toFixed(2)}</p>
+                <p className={`text-sm ${colors.text.secondary} line-through mt-1`}>
+                  ${(total * pricing.discountMultiplier).toFixed(2)}
                 </p>
               </div>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                className={`${colors.buttons.primary} px-8 py-4 rounded-lg font-semibold text-lg transition-colors flex items-center gap-2`}
               >
-                <ShoppingBag className="w-5 h-5" />
-                Add All to Cart
+                {(() => {
+                  const ShoppingBagIcon = iconMap[actions.addToCart.icon];
+                  return <ShoppingBagIcon className="w-5 h-5" />;
+                })()}
+                {actions.addToCart.text}
               </motion.button>
             </div>
-            <p className="text-sm text-green-600 font-semibold">
-              Save ${((total * 1.15) - total).toFixed(2)} when you buy together!
+            <p className={`text-sm ${colors.badges.savings} font-semibold`}>
+              Save ${((total * pricing.discountMultiplier) - total).toFixed(2)} when you buy together!
             </p>
           </div>
         </div>
@@ -116,4 +177,3 @@ export default function Page() {
     </main>
   );
 }
-

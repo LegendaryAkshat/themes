@@ -4,29 +4,44 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight, Play, ShoppingBag, Sparkles } from "lucide-react";
-import Lottie from "lottie-react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function Page() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const sectionRef = useRef(null);
-  const heroRef = useRef(null);
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-black",
+    text: {
+      primary: "text-white",
+      secondary: "text-gray-300",
+      badge: "text-gray-300"
+    },
+    badges: {
+      background: "bg-white/10 backdrop-blur-sm",
+      border: "border-white/20"
+    },
+    buttons: {
+      primary: "bg-white text-black",
+      secondary: "bg-white/10 backdrop-blur-sm hover:bg-white/20",
+      border: "border-white/20"
+    },
+    gradients: {
+      title: "bg-gradient-to-r from-white via-gray-100 to-white",
+      overlay: {
+        top: "bg-gradient-to-t from-black/50 via-transparent to-transparent",
+        sides: "bg-gradient-to-r from-black/30 via-transparent to-black/30"
+      }
+    }
+  },
   
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"]
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
-  
-  const slides = [
+  // Slides (Edit slides here!)
+  slides: [
     {
       badge: "Premium design",
       title: "Apple Watch Ultra",
@@ -51,7 +66,32 @@ export default function Page() {
       bgGradient: "from-purple-900 via-pink-900 to-black",
       accentColor: "purple"
     }
-  ];
+  ],
+  
+  // Animation Settings
+  animations: {
+    autoSlideInterval: 5000,
+    particles: {
+      count: 20,
+      enabled: true
+    }
+  }
+};
+
+export default function Page() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const sectionRef = useRef(null);
+  const heroRef = useRef(null);
+  const { colors, slides, animations } = pageConfig;
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -62,7 +102,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
+    const interval = setInterval(nextSlide, animations.autoSlideInterval);
     return () => clearInterval(interval);
   }, []);
 
@@ -73,7 +113,6 @@ export default function Page() {
     const textElements = hero.querySelectorAll('.hero-text');
     const imageElements = hero.querySelectorAll('.hero-image');
 
-    // Parallax effect on scroll
     gsap.to(textElements, {
       y: -50,
       scrollTrigger: {
@@ -95,31 +134,32 @@ export default function Page() {
       }
     });
 
-    // Floating particles animation
-    for (let i = 0; i < 20; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'absolute w-1 h-1 bg-white rounded-full opacity-20';
-      particle.style.left = `${Math.random() * 100}%`;
-      particle.style.top = `${Math.random() * 100}%`;
-      hero.appendChild(particle);
+    if (animations.particles.enabled) {
+      for (let i = 0; i < animations.particles.count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'absolute w-1 h-1 bg-white rounded-full opacity-20';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        hero.appendChild(particle);
 
-      gsap.to(particle, {
-        y: -100,
-        x: Math.random() * 100 - 50,
-        opacity: 0,
-        duration: Math.random() * 3 + 2,
-        repeat: -1,
-        ease: "none"
-      });
+        gsap.to(particle, {
+          y: -100,
+          x: Math.random() * 100 - 50,
+          opacity: 0,
+          duration: Math.random() * 3 + 2,
+          repeat: -1,
+          ease: "none"
+        });
+      }
     }
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, []);
+  }, [animations]);
 
   return (
-    <main className="min-h-screen w-full bg-black text-white overflow-hidden">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary} overflow-hidden`}>
       <motion.section
         ref={sectionRef}
         style={{ opacity, scale, y }}
@@ -129,7 +169,6 @@ export default function Page() {
           ref={heroRef}
           className={`relative bg-gradient-to-br ${slides[currentSlide].bgGradient} min-h-screen flex items-center overflow-hidden`}
         >
-          {/* Animated background pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0" style={{
               backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
@@ -137,9 +176,8 @@ export default function Page() {
             }} />
           </div>
 
-          {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+          <div className={`absolute inset-0 ${colors.gradients.overlay.top}`} />
+          <div className={`absolute inset-0 ${colors.gradients.overlay.sides}`} />
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -158,7 +196,7 @@ export default function Page() {
                     transition={{ delay: 0.2 }}
                     className="flex items-center gap-3"
                   >
-                    <span className="text-xs uppercase tracking-wider text-gray-300 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 flex items-center gap-2">
+                    <span className={`text-xs uppercase tracking-wider ${colors.text.badge} ${colors.badges.background} px-4 py-2 rounded-full ${colors.badges.border} flex items-center gap-2`}>
                       <Sparkles className="w-4 h-4" />
                       {slides[currentSlide].badge}
                     </span>
@@ -170,7 +208,7 @@ export default function Page() {
                     transition={{ delay: 0.3 }}
                     className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
                   >
-                    <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                    <span className={`bg-clip-text text-transparent ${colors.gradients.title}`}>
                       {slides[currentSlide].title}
                     </span>
                   </motion.h1>
@@ -179,7 +217,7 @@ export default function Page() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-gray-300 leading-relaxed text-lg md:text-xl max-w-lg"
+                    className={`${colors.text.secondary} leading-relaxed text-lg md:text-xl max-w-lg`}
                   >
                     {slides[currentSlide].description}
                   </motion.p>
@@ -193,7 +231,7 @@ export default function Page() {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="group relative bg-white text-black px-8 py-4 rounded-full font-semibold text-lg overflow-hidden"
+                      className={`group relative ${colors.buttons.primary} px-8 py-4 rounded-full font-semibold text-lg overflow-hidden`}
                     >
                       <span className="relative z-10 flex items-center gap-2">
                         <ShoppingBag className="w-5 h-5" />
@@ -208,7 +246,7 @@ export default function Page() {
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className="p-4 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-colors"
+                      className={`p-4 ${colors.buttons.secondary} rounded-full ${colors.buttons.border} transition-colors`}
                     >
                       <Play className="w-6 h-6" />
                     </motion.button>
@@ -229,7 +267,6 @@ export default function Page() {
                     <div className="w-80 h-96 bg-gray-700 rounded-2xl transform hover:scale-105 transition-transform duration-500" />
                   </div>
                   
-                  {/* Floating elements */}
                   <motion.div
                     animate={{
                       y: [0, -20, 0],
@@ -259,13 +296,12 @@ export default function Page() {
             </div>
           </div>
           
-          {/* Navigation buttons */}
           <div className="absolute left-6 top-1/2 -translate-y-1/2 z-20">
             <motion.button
               onClick={prevSlide}
               whileHover={{ scale: 1.1, x: -5 }}
               whileTap={{ scale: 0.9 }}
-              className="p-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full border border-white/20 transition-colors"
+              className={`p-4 ${colors.buttons.secondary} rounded-full ${colors.buttons.border} transition-colors`}
             >
               <ChevronLeft className="w-6 h-6" />
             </motion.button>
@@ -276,13 +312,12 @@ export default function Page() {
               onClick={nextSlide}
               whileHover={{ scale: 1.1, x: 5 }}
               whileTap={{ scale: 0.9 }}
-              className="p-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full border border-white/20 transition-colors"
+              className={`p-4 ${colors.buttons.secondary} rounded-full ${colors.buttons.border} transition-colors`}
             >
               <ChevronRight className="w-6 h-6" />
             </motion.button>
           </div>
           
-          {/* Slide indicators */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-3 z-20">
             {slides.map((_, index) => (
               <motion.button

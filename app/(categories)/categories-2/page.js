@@ -1,9 +1,40 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
-export default function Page() {
-  const categories = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-700"
+    },
+    borders: {
+      default: "border-gray-200",
+      hover: "border-blue-600"
+    },
+    buttons: {
+      hover: "hover:bg-gray-100",
+      category: {
+        hover: "hover:border-blue-600 hover:bg-blue-50"
+      }
+    }
+  },
+  
+  // Navigation Controls
+  navigation: {
+    prev: { enabled: true },
+    next: { enabled: true }
+  },
+  
+  // Categories (Edit categories here!)
+  categories: [
     "Laptop & PC",
     "Watches",
     "Mobile & Tablet",
@@ -11,10 +42,14 @@ export default function Page() {
     "Home Appliance",
     "Games & Video",
     "Television"
-  ];
+  ]
+};
+
+export default function Page() {
+  const { colors, navigation, categories } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-white text-gray-900">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary}`}>
       <motion.section
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -23,26 +58,30 @@ export default function Page() {
       >
         <div className="relative">
           <div className="flex items-center justify-between mb-4">
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-              <div className="w-6 h-6 bg-gray-400 rounded-full"></div>
-            </button>
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-              <div className="w-6 h-6 bg-gray-400 rounded-full"></div>
-            </button>
+            {navigation.prev.enabled && (
+              <button className={`p-2 ${colors.buttons.hover} rounded-full transition-colors`}>
+                <div className="w-6 h-6 bg-gray-400 rounded-full"></div>
+              </button>
+            )}
+            {navigation.next.enabled && (
+              <button className={`p-2 ${colors.buttons.hover} rounded-full transition-colors`}>
+                <div className="w-6 h-6 bg-gray-400 rounded-full"></div>
+              </button>
+            )}
           </div>
           
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
             {categories.map((category, index) => (
               <motion.a
                 key={index}
-                href="#"
+                href={`/category-${category.toLowerCase().replace(/\s+/g, '-')}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
-                className="flex-shrink-0 bg-white border-2 border-gray-200 rounded-lg px-6 py-3 hover:border-blue-600 hover:bg-blue-50 transition-colors"
+                className={`flex-shrink-0 ${colors.card} border-2 ${colors.borders.default} rounded-lg px-6 py-3 ${colors.buttons.category.hover} transition-colors`}
               >
-                <span className="text-gray-700 font-medium whitespace-nowrap">
+                <span className={`${colors.text.secondary} font-medium whitespace-nowrap`}>
                   {category}
                 </span>
               </motion.a>
@@ -53,4 +92,3 @@ export default function Page() {
     </main>
   );
 }
-

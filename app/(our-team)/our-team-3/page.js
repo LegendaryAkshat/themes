@@ -3,8 +3,42 @@
 import { motion } from "framer-motion";
 import { Linkedin, Twitter, Github, Mail } from "lucide-react";
 
-export default function Page() {
-  const team = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    card: "bg-gradient-to-r from-gray-50 to-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      accent: "text-indigo-600"
+    },
+    badges: {
+      background: "bg-indigo-50",
+      text: "text-indigo-600"
+    },
+    buttons: {
+      social: "bg-indigo-100 hover:bg-indigo-200",
+      socialIcon: "text-indigo-600",
+      cta: "bg-white text-indigo-600 hover:shadow-xl"
+    }
+  },
+  
+  // Page Header
+  header: {
+    badge: "Our Team",
+    title: {
+      line1: "Meet the",
+      line2: "Dream Team"
+    },
+    description: "Talented individuals working together to create something extraordinary."
+  },
+  
+  // Team Members (Edit team members here!)
+  team: [
     {
       name: "Sophie Chen",
       role: "CEO & Co-Founder",
@@ -53,12 +87,29 @@ export default function Page() {
       gradient: "from-yellow-500 to-orange-500",
       social: { linkedin: "#", twitter: "#" }
     }
-  ];
+  ],
+  
+  // CTA Section
+  cta: {
+    text: "Want to join our team? We're always looking for exceptional talent.",
+    buttonText: "See Open Roles",
+    enabled: true
+  }
+};
+
+export default function Page() {
+  const { colors, header, team, cta } = pageConfig;
+
+  const iconMap = {
+    Linkedin,
+    Twitter,
+    Github,
+    Mail
+  };
 
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <section className="px-6 py-24 max-w-7xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,22 +120,21 @@ export default function Page() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring" }}
-            className="inline-block text-sm uppercase tracking-wider text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full font-semibold mb-6"
+            className={`inline-block text-sm uppercase tracking-wider ${colors.badges.text} ${colors.badges.background} px-4 py-2 rounded-full font-semibold mb-6`}
           >
-            Our Team
+            {header.badge}
           </motion.span>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-            Meet the
+          <h1 className={`text-5xl md:text-7xl font-bold ${colors.text.primary} mb-6`}>
+            {header.title.line1}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
-              Dream Team
+              {header.title.line2}
             </span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Talented individuals working together to create something extraordinary.
+          <p className={`text-xl ${colors.text.secondary} max-w-3xl mx-auto leading-relaxed`}>
+            {header.description}
           </p>
         </motion.div>
 
-        {/* Team Grid - Alternating Layout */}
         <div className="space-y-12">
           {team.map((member, index) => (
             <motion.div
@@ -98,7 +148,6 @@ export default function Page() {
                 index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
               }`}
             >
-              {/* Avatar */}
               <motion.div
                 whileHover={{ rotate: 360, scale: 1.1 }}
                 transition={{ duration: 0.6 }}
@@ -107,37 +156,36 @@ export default function Page() {
                 <span className="text-5xl font-bold text-white">{member.image}</span>
               </motion.div>
 
-              {/* Info Card */}
-              <div className="flex-1 bg-gradient-to-r from-gray-50 to-white rounded-3xl p-8 shadow-lg">
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-indigo-600 font-semibold text-lg mb-4">{member.role}</p>
-                <p className="text-gray-600 leading-relaxed mb-6">{member.bio}</p>
+              <div className={`flex-1 ${colors.card} rounded-3xl p-8 shadow-lg`}>
+                <h3 className={`text-3xl font-bold ${colors.text.primary} mb-2`}>{member.name}</h3>
+                <p className={`${colors.text.accent} font-semibold text-lg mb-4`}>{member.role}</p>
+                <p className={`${colors.text.secondary} leading-relaxed mb-6`}>{member.bio}</p>
                 <div className="flex items-center gap-4">
                   {member.social.linkedin && (
                     <motion.a
                       whileHover={{ scale: 1.2, y: -2 }}
                       href={member.social.linkedin}
-                      className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center hover:bg-indigo-200 transition-colors"
+                      className={`w-10 h-10 ${colors.buttons.social} rounded-full flex items-center justify-center transition-colors`}
                     >
-                      <Linkedin className="w-5 h-5 text-indigo-600" />
+                      <Linkedin className={`w-5 h-5 ${colors.buttons.socialIcon}`} />
                     </motion.a>
                   )}
                   {member.social.twitter && (
                     <motion.a
                       whileHover={{ scale: 1.2, y: -2 }}
                       href={member.social.twitter}
-                      className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center hover:bg-indigo-200 transition-colors"
+                      className={`w-10 h-10 ${colors.buttons.social} rounded-full flex items-center justify-center transition-colors`}
                     >
-                      <Twitter className="w-5 h-5 text-indigo-600" />
+                      <Twitter className={`w-5 h-5 ${colors.buttons.socialIcon}`} />
                     </motion.a>
                   )}
                   {member.social.github && (
                     <motion.a
                       whileHover={{ scale: 1.2, y: -2 }}
                       href={member.social.github}
-                      className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center hover:bg-indigo-200 transition-colors"
+                      className={`w-10 h-10 ${colors.buttons.social} rounded-full flex items-center justify-center transition-colors`}
                     >
-                      <Github className="w-5 h-5 text-indigo-600" />
+                      <Github className={`w-5 h-5 ${colors.buttons.socialIcon}`} />
                     </motion.a>
                   )}
                 </div>
@@ -146,29 +194,29 @@ export default function Page() {
           ))}
         </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-20 text-center"
-        >
-          <div className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-2xl">
-            <p className="text-2xl font-light leading-relaxed max-w-3xl mb-6">
-              Want to join our team? We're always looking for exceptional talent.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-indigo-600 px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              See Open Roles
-            </motion.button>
-          </div>
-        </motion.div>
+        {cta.enabled && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-20 text-center"
+          >
+            <div className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-2xl">
+              <p className="text-2xl font-light leading-relaxed max-w-3xl mb-6">
+                {cta.text}
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`${colors.buttons.cta} px-8 py-4 rounded-xl font-semibold shadow-lg transition-all`}
+              >
+                {cta.buttonText}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
       </section>
     </main>
   );
 }
-

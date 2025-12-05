@@ -4,10 +4,39 @@ import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import { useState } from "react";
 
-export default function Page() {
-  const [openIndex, setOpenIndex] = useState(0);
-
-  const faqs = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gradient-to-br from-blue-50 to-indigo-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      accent: "text-blue-600"
+    },
+    borders: {
+      default: "border-transparent",
+      hover: "border-blue-200"
+    },
+    buttons: {
+      hover: "hover:bg-blue-50"
+    },
+    icon: {
+      background: "bg-blue-100"
+    }
+  },
+  
+  // Page Header
+  page: {
+    title: "Frequently Asked Questions",
+    description: "Find answers to common questions"
+  },
+  
+  // FAQs (Edit FAQs here!)
+  faqs: [
     {
       question: "What is your return policy?",
       answer: "We offer a 30-day return policy on all items. Items must be in their original condition with tags attached."
@@ -32,21 +61,26 @@ export default function Page() {
       question: "Do you offer gift wrapping?",
       answer: "Yes, we offer gift wrapping services for an additional fee. You can select this option at checkout."
     }
-  ];
+  ]
+};
+
+export default function Page() {
+  const [openIndex, setOpenIndex] = useState(0);
+  const { colors, page, faqs } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-blue-50 to-indigo-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-block p-4 bg-blue-100 rounded-full mb-4">
-            <HelpCircle className="w-12 h-12 text-blue-600" />
+          <div className={`inline-block p-4 ${colors.icon.background} rounded-full mb-4`}>
+            <HelpCircle className={`w-12 h-12 ${colors.text.accent}`} />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
-          <p className="text-gray-600">Find answers to common questions</p>
+          <h1 className={`text-4xl font-bold ${colors.text.primary} mb-4`}>{page.title}</h1>
+          <p className={colors.text.secondary}>{page.description}</p>
         </motion.div>
 
         <div className="space-y-4">
@@ -57,19 +91,19 @@ export default function Page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-md overflow-hidden border-2 border-transparent hover:border-blue-200 transition-colors"
+              className={`${colors.card} rounded-xl shadow-md overflow-hidden border-2 ${colors.borders.default} hover:${colors.borders.hover} transition-colors`}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
-                className="w-full px-6 py-5 flex items-center justify-between hover:bg-blue-50 transition-colors"
+                className={`w-full px-6 py-5 flex items-center justify-between ${colors.buttons.hover} transition-colors`}
               >
-                <span className="font-semibold text-gray-900 text-left pr-4">{faq.question}</span>
+                <span className={`font-semibold ${colors.text.primary} text-left pr-4`}>{faq.question}</span>
                 <motion.div
                   animate={{ rotate: openIndex === index ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
                   className="flex-shrink-0"
                 >
-                  <ChevronDown className="w-5 h-5 text-blue-600" />
+                  <ChevronDown className={`w-5 h-5 ${colors.text.accent}`} />
                 </motion.div>
               </button>
               {openIndex === index && (
@@ -79,7 +113,7 @@ export default function Page() {
                   exit={{ opacity: 0, height: 0 }}
                   className="px-6 pb-5"
                 >
-                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                  <p className={`${colors.text.secondary} leading-relaxed`}>{faq.answer}</p>
                 </motion.div>
               )}
             </motion.div>
@@ -89,4 +123,3 @@ export default function Page() {
     </main>
   );
 }
-

@@ -4,16 +4,78 @@ import { motion } from "framer-motion";
 import { Heart, ShoppingBag, Star, Box, Smartphone } from "lucide-react";
 import { useState } from "react";
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    card: "bg-white/80 backdrop-blur-sm",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    buttons: {
+      primary: "bg-blue-600 hover:bg-blue-700 text-white",
+      view: {
+        active: "bg-blue-600 text-white",
+        inactive: "bg-gray-200 text-gray-700"
+      },
+      wishlist: {
+        active: "bg-red-500 text-white",
+        inactive: "bg-white/80 text-gray-700"
+      }
+    },
+    gradients: {
+      image: "bg-gradient-to-br from-gray-100 to-gray-200"
+    }
+  },
+  
+  // Product Information (Edit product details here!)
+  product: {
+    name: "Premium Product",
+    price: 99.99,
+    originalPrice: 149.99,
+    rating: 4.8,
+    reviews: 128,
+    description: "View this product in 3D or use AR to see it in your space. Premium quality product with exceptional features."
+  },
+  
+  // View Modes
+  viewModes: [
+    { id: "3d", label: "3D View", icon: "Box" },
+    { id: "ar", label: "AR View", icon: "Smartphone" }
+  ],
+  
+  // Actions
+  actions: {
+    addToCart: {
+      text: "Add to Cart",
+      icon: "ShoppingBag"
+    }
+  }
+};
+
 export default function Page() {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [viewMode, setViewMode] = useState("3d");
+  const { colors, product, viewModes, actions } = pageConfig;
+
+  const iconMap = {
+    Heart,
+    ShoppingBag,
+    Star,
+    Box,
+    Smartphone
+  };
 
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
-            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 relative overflow-hidden">
+            <div className={`aspect-square ${colors.gradients.image} rounded-2xl mb-4 relative overflow-hidden`}>
               <div className="w-full h-full flex items-center justify-center">
                 {viewMode === "3d" ? (
                   <motion.div
@@ -34,7 +96,7 @@ export default function Page() {
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsWishlisted(!isWishlisted)}
                   className={`p-2 rounded-full backdrop-blur-sm ${
-                    isWishlisted ? "bg-red-500 text-white" : "bg-white/80 text-gray-700"
+                    isWishlisted ? colors.buttons.wishlist.active : colors.buttons.wishlist.inactive
                   }`}
                 >
                   <Heart className="w-5 h-5" fill={isWishlisted ? "currentColor" : "none"} />
@@ -42,49 +104,49 @@ export default function Page() {
               </div>
             </div>
             <div className="flex gap-2 justify-center">
-              <button
-                onClick={() => setViewMode("3d")}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-                  viewMode === "3d" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                <Box className="w-5 h-5 inline mr-2" />
-                3D View
-              </button>
-              <button
-                onClick={() => setViewMode("ar")}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-                  viewMode === "ar" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                <Smartphone className="w-5 h-5 inline mr-2" />
-                AR View
-              </button>
+              {viewModes.map((mode) => (
+                <button
+                  key={mode.id}
+                  onClick={() => setViewMode(mode.id)}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    viewMode === mode.id ? colors.buttons.view.active : colors.buttons.view.inactive
+                  }`}
+                >
+                  {(() => {
+                    const Icon = iconMap[mode.icon];
+                    return <Icon className="w-5 h-5 inline mr-2" />;
+                  })()}
+                  {mode.label}
+                </button>
+              ))}
             </div>
           </div>
 
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Premium Product</h1>
+            <h1 className={`text-4xl font-bold ${colors.text.primary} mb-4`}>{product.name}</h1>
             <div className="flex items-center gap-2 mb-4">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                <Star key={i} className={`w-5 h-5 ${colors.text.secondary}`} />
               ))}
-              <span className="text-gray-600">4.8 (128 reviews)</span>
+              <span className={colors.text.secondary}>{product.rating} ({product.reviews} reviews)</span>
             </div>
             <div className="mb-6">
-              <span className="text-4xl font-bold text-gray-900">$99.99</span>
-              <span className="text-2xl text-gray-500 line-through ml-3">$149.99</span>
+              <span className={`text-4xl font-bold ${colors.text.primary}`}>${product.price.toFixed(2)}</span>
+              <span className={`text-2xl ${colors.text.secondary} line-through ml-3`}>${product.originalPrice.toFixed(2)}</span>
             </div>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              View this product in 3D or use AR to see it in your space. Premium quality product with exceptional features.
+            <p className={`${colors.text.secondary} mb-8 leading-relaxed`}>
+              {product.description}
             </p>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+              className={`w-full ${colors.buttons.primary} py-4 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center gap-2`}
             >
-              <ShoppingBag className="w-5 h-5" />
-              Add to Cart
+              {(() => {
+                const ShoppingBagIcon = iconMap[actions.addToCart.icon];
+                return <ShoppingBagIcon className="w-5 h-5" />;
+              })()}
+              {actions.addToCart.text}
             </motion.button>
           </div>
         </div>
@@ -92,4 +154,3 @@ export default function Page() {
     </main>
   );
 }
-

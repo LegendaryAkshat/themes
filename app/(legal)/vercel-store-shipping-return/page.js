@@ -4,35 +4,129 @@ import { motion } from "framer-motion";
 import { Search, ShoppingCart, Menu } from "lucide-react";
 import Link from "next/link";
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Brand & Identity
+  brand: {
+    name: "Acme Store",
+    homeLink: "/vercel-store-home",
+    logo: {
+      background: "bg-white",
+      inner: "bg-black"
+    }
+  },
+  
+  // Colors & Theme
+  colors: {
+    background: "bg-black",
+    text: {
+      primary: "text-white",
+      secondary: "text-gray-300",
+      link: "text-gray-400 hover:text-white"
+    },
+    borders: {
+      default: "border-gray-800"
+    },
+    buttons: {
+      hover: "hover:bg-gray-800"
+    },
+    inputs: {
+      background: "bg-gray-900",
+      border: "border-gray-800",
+      focus: "focus:ring-gray-700"
+    }
+  },
+  
+  // Navigation
+  navigation: {
+    categories: [
+      { label: "All", href: "/" },
+      { label: "Shirts", href: "/search?category=shirts" },
+      { label: "Stickers", href: "/search?category=stickers" }
+    ],
+    searchPlaceholder: "Search for products..."
+  },
+  
+  // Page Content
+  page: {
+    title: "Shipping & Return Policy"
+  },
+  
+  // Sections (Edit sections here!)
+  sections: [
+    {
+      title: "Shipping",
+      content: "We offer standard shipping on all orders. Orders are typically processed within 1-2 business days and shipped via standard ground shipping.",
+      list: [
+        "Standard shipping: 5-7 business days",
+        "Express shipping: 2-3 business days",
+        "International shipping: 10-14 business days"
+      ]
+    },
+    {
+      title: "Returns",
+      content: "We accept returns within 30 days of purchase. Items must be in original condition with tags attached.",
+      additionalContent: "To initiate a return, please contact our customer service team with your order number."
+    },
+    {
+      title: "Refunds",
+      content: "Refunds will be processed to the original payment method within 5-10 business days after we receive your returned item."
+    }
+  ],
+  
+  // Footer
+  footer: {
+    links: [
+      { label: "Home", href: "/" },
+      { label: "About", href: "/about" },
+      { label: "Terms & Conditions", href: "/terms" },
+      { label: "Shipping & Return Policy", href: "/shipping-return" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "FAQ", href: "/faq" }
+    ],
+    copyright: "© 2023-2025 ACME, Inc. All rights reserved.",
+    credits: [
+      { label: "View the source", href: "#" },
+      { label: "Created by ▲ Vercel", href: "#" }
+    ]
+  }
+};
+
 export default function Page() {
+  const { brand, colors, navigation, page, sections, footer } = pageConfig;
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      <header className="border-b border-gray-800">
+    <div className={`min-h-screen ${colors.background} ${colors.text.primary}`}>
+      <header className={`border-b ${colors.borders.default}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <button className="md:hidden p-2 rounded-md hover:bg-gray-800">
+            <button className={`md:hidden p-2 rounded-md ${colors.buttons.hover}`}>
               <Menu className="w-6 h-6" />
             </button>
             <div className="flex items-center gap-8 flex-1">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                  <div className="w-4 h-4 bg-black rounded-sm"></div>
+              <Link href={brand.homeLink} className="flex items-center gap-2">
+                <div className={`w-8 h-8 ${brand.logo.background} rounded flex items-center justify-center`}>
+                  <div className={`w-4 h-4 ${brand.logo.inner} rounded-sm`}></div>
                 </div>
-                <span className="font-semibold text-lg">Acme Store</span>
+                <span className="font-semibold text-lg">{brand.name}</span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <Link href="/" className="text-sm hover:text-gray-300 transition-colors">All</Link>
-                <Link href="/search?category=shirts" className="text-sm hover:text-gray-300 transition-colors">Shirts</Link>
-                <Link href="/search?category=stickers" className="text-sm hover:text-gray-300 transition-colors">Stickers</Link>
+                {navigation.categories.map((category, index) => (
+                  <Link key={index} href={category.href} className={`text-sm ${colors.text.secondary} hover:${colors.text.primary} transition-colors`}>
+                    {category.label}
+                  </Link>
+                ))}
               </div>
             </div>
             <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
               <div className="relative w-full">
-                <input type="text" placeholder="Search for products..." className="w-full bg-gray-900 border border-gray-800 rounded-md px-4 py-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-gray-700" />
+                <input type="text" placeholder={navigation.searchPlaceholder} className={`w-full ${colors.inputs.background} ${colors.inputs.border} rounded-md px-4 py-2 pl-10 text-sm focus:outline-none focus:ring-2 ${colors.inputs.focus}`} />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               </div>
             </div>
-            <button className="p-2 rounded-md hover:bg-gray-800 transition-colors">
+            <button className={`p-2 rounded-md ${colors.buttons.hover} transition-colors`}>
               <ShoppingCart className="w-6 h-6" />
             </button>
           </div>
@@ -41,56 +135,58 @@ export default function Page() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <h1 className="text-4xl font-bold">Shipping & Return Policy</h1>
-          <div className="space-y-6 text-gray-300">
-            <section>
-              <h2 className="text-xl font-semibold text-white mb-3">Shipping</h2>
-              <p>We offer standard shipping on all orders. Orders are typically processed within 1-2 business days and shipped via standard ground shipping.</p>
-              <ul className="list-disc list-inside space-y-2 mt-4 ml-4">
-                <li>Standard shipping: 5-7 business days</li>
-                <li>Express shipping: 2-3 business days</li>
-                <li>International shipping: 10-14 business days</li>
-              </ul>
-            </section>
-            <section>
-              <h2 className="text-xl font-semibold text-white mb-3">Returns</h2>
-              <p>We accept returns within 30 days of purchase. Items must be in original condition with tags attached.</p>
-              <p className="mt-4">To initiate a return, please contact our customer service team with your order number.</p>
-            </section>
-            <section>
-              <h2 className="text-xl font-semibold text-white mb-3">Refunds</h2>
-              <p>Refunds will be processed to the original payment method within 5-10 business days after we receive your returned item.</p>
-            </section>
+          <h1 className={`text-4xl font-bold`}>{page.title}</h1>
+          <div className={`space-y-6 ${colors.text.secondary}`}>
+            {sections.map((section, index) => (
+              <section key={index}>
+                <h2 className={`text-xl font-semibold ${colors.text.primary} mb-3`}>{section.title}</h2>
+                <p>{section.content}</p>
+                {section.list && (
+                  <ul className="list-disc list-inside space-y-2 mt-4 ml-4">
+                    {section.list.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+                {section.additionalContent && (
+                  <p className="mt-4">{section.additionalContent}</p>
+                )}
+              </section>
+            ))}
           </div>
         </motion.div>
       </main>
 
-      <footer className="border-t border-gray-800 mt-20">
+      <footer className={`border-t ${colors.borders.default} mt-20`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <Link href="/" className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                  <div className="w-4 h-4 bg-black rounded-sm"></div>
+              <Link href={brand.homeLink} className="flex items-center gap-2 mb-4">
+                <div className={`w-8 h-8 ${brand.logo.background} rounded flex items-center justify-center`}>
+                  <div className={`w-4 h-4 ${brand.logo.inner} rounded-sm`}></div>
                 </div>
-                <span className="font-semibold">Acme Store</span>
+                <span className="font-semibold">{brand.name}</span>
               </Link>
             </div>
             <nav>
               <ul className="space-y-2">
-                <li><Link href="/" className="text-sm text-gray-400 hover:text-white transition-colors">Home</Link></li>
-                <li><Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link></li>
-                <li><Link href="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">Terms & Conditions</Link></li>
-                <li><Link href="/shipping-return" className="text-sm text-gray-400 hover:text-white transition-colors">Shipping & Return Policy</Link></li>
-                <li><Link href="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/faq" className="text-sm text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
+                {footer.links.map((link, index) => (
+                  <li key={index}>
+                    <Link href={link.href} className={`text-sm ${colors.text.link} transition-colors`}>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </nav>
-            <div className="text-sm text-gray-400">
-              <p className="mb-2">© 2023-2025 ACME, Inc. All rights reserved.</p>
+            <div className={`text-sm ${colors.text.secondary}`}>
+              <p className="mb-2">{footer.copyright}</p>
               <div className="space-y-1">
-                <Link href="#" className="block hover:text-white transition-colors">View the source</Link>
-                <Link href="#" className="block hover:text-white transition-colors">Created by ▲ Vercel</Link>
+                {footer.credits.map((credit, index) => (
+                  <Link key={index} href={credit.href} className={`block ${colors.text.link} transition-colors`}>
+                    {credit.label}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
@@ -99,4 +195,3 @@ export default function Page() {
     </div>
   );
 }
-

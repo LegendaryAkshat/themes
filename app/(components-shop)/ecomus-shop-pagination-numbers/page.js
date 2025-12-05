@@ -4,16 +4,54 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gradient-to-br from-gray-50 via-white to-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    borders: {
+      default: "border-gray-100",
+      active: "border-gray-300",
+      disabled: "border-gray-200"
+    },
+    buttons: {
+      pagination: {
+        active: "bg-blue-600 text-white shadow-lg scale-110",
+        inactive: "bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50",
+        disabled: "border-gray-200 text-gray-400 cursor-not-allowed"
+      }
+    }
+  },
+  
+  // Page Header
+  header: {
+    title: "Pagination with Numbers",
+    description: "Navigate through pages with a numbered pagination system that provides clear context and easy navigation."
+  },
+  
+  // Pagination Settings
+  pagination: {
+    totalPages: 10
+  }
+};
+
 export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
+  const { colors, header, pagination } = pageConfig;
 
   const getPageNumbers = () => {
     const pages = [];
-    const showEllipsis = totalPages > 7;
+    const showEllipsis = pagination.totalPages > 7;
 
     if (!showEllipsis) {
-      for (let i = 1; i <= totalPages; i++) {
+      for (let i = 1; i <= pagination.totalPages; i++) {
         pages.push(i);
       }
     } else {
@@ -22,11 +60,11 @@ export default function Page() {
           pages.push(i);
         }
         pages.push('ellipsis');
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 3) {
+        pages.push(pagination.totalPages);
+      } else if (currentPage >= pagination.totalPages - 3) {
         pages.push(1);
         pages.push('ellipsis');
-        for (let i = totalPages - 4; i <= totalPages; i++) {
+        for (let i = pagination.totalPages - 4; i <= pagination.totalPages; i++) {
           pages.push(i);
         }
       } else {
@@ -36,7 +74,7 @@ export default function Page() {
           pages.push(i);
         }
         pages.push('ellipsis');
-        pages.push(totalPages);
+        pages.push(pagination.totalPages);
       }
     }
 
@@ -44,7 +82,7 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,15 +90,15 @@ export default function Page() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Pagination with Numbers
+          <h1 className={`text-4xl md:text-5xl font-bold ${colors.text.primary} mb-4`}>
+            {header.title}
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Navigate through pages with a numbered pagination system that provides clear context and easy navigation.
+          <p className={`text-lg ${colors.text.secondary} max-w-2xl mx-auto`}>
+            {header.description}
           </p>
         </motion.div>
 
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-12">
+        <div className={`${colors.card} rounded-2xl shadow-xl ${colors.borders.default} p-8 md:p-12`}>
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -69,8 +107,8 @@ export default function Page() {
               disabled={currentPage === 1}
               className={`p-3 rounded-lg border-2 transition-all ${
                 currentPage === 1
-                  ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                  : "border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50"
+                  ? colors.buttons.pagination.disabled
+                  : colors.buttons.pagination.inactive
               }`}
             >
               <ChevronLeft className="w-5 h-5" />
@@ -93,8 +131,8 @@ export default function Page() {
                   onClick={() => setCurrentPage(page)}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all min-w-[44px] ${
                     currentPage === page
-                      ? "bg-blue-600 text-white shadow-lg scale-110"
-                      : "bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50"
+                      ? colors.buttons.pagination.active
+                      : colors.buttons.pagination.inactive
                   }`}
                 >
                   {page}
@@ -105,24 +143,19 @@ export default function Page() {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
+              disabled={currentPage === pagination.totalPages}
               className={`p-3 rounded-lg border-2 transition-all ${
-                currentPage === totalPages
-                  ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                  : "border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50"
+                currentPage === pagination.totalPages
+                  ? colors.buttons.pagination.disabled
+                  : colors.buttons.pagination.inactive
               }`}
             >
               <ChevronRight className="w-5 h-5" />
             </motion.button>
-          </div>
-
-          <div className="mt-8 text-center text-sm text-gray-500">
-            Page {currentPage} of {totalPages}
           </div>
         </div>
       </div>
     </main>
   );
 }
-

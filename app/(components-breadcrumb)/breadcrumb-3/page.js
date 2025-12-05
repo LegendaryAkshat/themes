@@ -3,16 +3,45 @@
 import { motion } from "framer-motion";
 import { Home } from "lucide-react";
 
-export default function Page() {
-  const breadcrumbs = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900",
+    card: "bg-white/5 backdrop-blur-xl",
+    text: {
+      primary: "text-white",
+      secondary: "text-gray-300",
+      inactive: "text-gray-400",
+      hover: "hover:text-white"
+    },
+    borders: {
+      default: "border-white/10"
+    }
+  },
+  
+  // Page Header
+  header: {
+    title: "Minimal Breadcrumb",
+    description: "A sleek, minimalist breadcrumb design with subtle separators"
+  },
+  
+  // Breadcrumbs (Edit breadcrumb items here!)
+  breadcrumbs: [
     { label: "Home", href: "#" },
     { label: "Shop", href: "#" },
     { label: "Collections", href: "#" },
     { label: "Summer 2024", href: "#", isActive: true }
-  ];
+  ]
+};
+
+export default function Page() {
+  const { colors, header, breadcrumbs } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900 text-white">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -20,15 +49,15 @@ export default function Page() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Minimal Breadcrumb
+          <h1 className={`text-4xl md:text-5xl font-bold mb-4`}>
+            {header.title}
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl">
-            A sleek, minimalist breadcrumb design with subtle separators
+          <p className={`text-lg ${colors.text.inactive} max-w-2xl`}>
+            {header.description}
           </p>
         </motion.div>
 
-        <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8 md:p-12">
+        <div className={`${colors.card} rounded-2xl border ${colors.borders.default} p-8 md:p-12`}>
           <nav className="flex items-center gap-3 flex-wrap">
             {breadcrumbs.map((crumb, index) => (
               <div key={index} className="flex items-center gap-3">
@@ -39,13 +68,13 @@ export default function Page() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ scale: 1.1 }}
-                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+                    className={`flex items-center gap-2 ${colors.text.secondary} ${colors.text.hover} transition-colors`}
                   >
                     <Home className="w-4 h-4" />
                   </motion.a>
                 ) : (
                   <>
-                    <span className="text-gray-600">/</span>
+                    <span className={colors.text.inactive}>/</span>
                     <motion.a
                       href={crumb.href}
                       initial={{ opacity: 0 }}
@@ -54,8 +83,8 @@ export default function Page() {
                       whileHover={{ scale: 1.05 }}
                       className={`transition-colors ${
                         crumb.isActive
-                          ? "text-white font-semibold"
-                          : "text-gray-400 hover:text-white"
+                          ? `${colors.text.primary} font-semibold`
+                          : `${colors.text.inactive} ${colors.text.hover}`
                       }`}
                     >
                       {crumb.label}
@@ -70,4 +99,3 @@ export default function Page() {
     </main>
   );
 }
-

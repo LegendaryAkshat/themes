@@ -3,8 +3,43 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 
-export default function Page() {
-  const valueCategories = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gradient-to-br from-gray-50 via-white to-indigo-50/30",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      accent: "text-indigo-600"
+    },
+    badges: {
+      text: "text-indigo-600"
+    },
+    statement: {
+      background: "bg-gradient-to-r from-indigo-600 to-purple-600",
+      text: "text-white"
+    }
+  },
+  
+  // Page Header
+  header: {
+    badge: {
+      text: "Our Commitment",
+      icon: "Sparkles"
+    },
+    title: {
+      line1: "Values That",
+      line2: "Shape Our Culture"
+    },
+    description: "Three pillars that define how we work, grow, and connect with each other and our community."
+  },
+  
+  // Value Categories (Edit value categories here!)
+  valueCategories: [
     {
       title: "How We Work",
       values: [
@@ -32,12 +67,21 @@ export default function Page() {
       ],
       gradient: "from-orange-500 to-red-500"
     }
-  ];
+  ],
+  
+  // Bottom Statement
+  statement: {
+    text: "\"These values aren't just words—they're the foundation of our culture, the guide for our decisions, and the promise we make to ourselves and our community.\"",
+    author: "Leadership Team"
+  }
+};
+
+export default function Page() {
+  const { colors, header, valueCategories, statement } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-gray-50 via-white to-indigo-50/30">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <section className="px-6 py-24 max-w-7xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,23 +94,22 @@ export default function Page() {
             transition={{ delay: 0.2, type: "spring" }}
             className="inline-flex items-center gap-2 mb-6"
           >
-            <Sparkles className="w-6 h-6 text-indigo-600" />
-            <span className="text-sm uppercase tracking-wider text-indigo-600 font-semibold">
-              Our Commitment
+            <Sparkles className={`w-6 h-6 ${colors.badges.text}`} />
+            <span className={`text-sm uppercase tracking-wider ${colors.badges.text} font-semibold`}>
+              {header.badge.text}
             </span>
           </motion.div>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-            Values That
+          <h1 className={`text-5xl md:text-7xl font-bold ${colors.text.primary} mb-6`}>
+            {header.title.line1}
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
-              Shape Our Culture
+              {header.title.line2}
             </span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Three pillars that define how we work, grow, and connect with each other and our community.
+          <p className={`text-xl ${colors.text.secondary} max-w-3xl mx-auto leading-relaxed`}>
+            {header.description}
           </p>
         </motion.div>
 
-        {/* Value Categories */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           {valueCategories.map((category, index) => (
             <motion.div
@@ -76,12 +119,11 @@ export default function Page() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all overflow-hidden"
+              className={`group relative ${colors.card} rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all overflow-hidden`}
             >
-              {/* Gradient Header */}
               <div className={`h-2 bg-gradient-to-r ${category.gradient} mb-6 rounded-full`} />
               
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">{category.title}</h3>
+              <h3 className={`text-2xl font-bold ${colors.text.primary} mb-6`}>{category.title}</h3>
 
               <ul className="space-y-4 mb-6">
                 {category.values.map((value, vIndex) => (
@@ -97,14 +139,14 @@ export default function Page() {
                       <CheckCircle2 className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-900 mb-1">{value.name}</div>
-                      <div className="text-sm text-gray-600">{value.description}</div>
+                      <div className={`font-semibold ${colors.text.primary} mb-1`}>{value.name}</div>
+                      <div className={`text-sm ${colors.text.secondary}`}>{value.description}</div>
                     </div>
                   </motion.li>
                 ))}
               </ul>
 
-              <div className="flex items-center text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className={`flex items-center ${colors.text.accent} opacity-0 group-hover:opacity-100 transition-opacity`}>
                 <span className="text-sm font-semibold mr-2">Explore</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -112,15 +154,13 @@ export default function Page() {
           ))}
         </div>
 
-        {/* Bottom Statement */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-12 md:p-16 text-white overflow-hidden"
+          className={`relative ${colors.statement.background} rounded-3xl p-12 md:p-16 ${colors.statement.text} overflow-hidden`}
         >
-          {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
@@ -128,12 +168,11 @@ export default function Page() {
 
           <div className="relative z-10 text-center max-w-4xl mx-auto">
             <p className="text-3xl md:text-4xl font-light leading-relaxed mb-6">
-              "These values aren't just words—they're the foundation of our culture, 
-              the guide for our decisions, and the promise we make to ourselves and our community."
+              {statement.text}
             </p>
             <div className="flex items-center justify-center gap-4">
               <div className="w-16 h-px bg-white/30" />
-              <span className="text-lg font-semibold">Leadership Team</span>
+              <span className="text-lg font-semibold">{statement.author}</span>
               <div className="w-16 h-px bg-white/30" />
             </div>
           </div>
@@ -142,4 +181,3 @@ export default function Page() {
     </main>
   );
 }
-

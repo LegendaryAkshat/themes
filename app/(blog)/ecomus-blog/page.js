@@ -3,15 +3,40 @@
 import { motion } from "framer-motion";
 import { Calendar, User, ArrowRight } from "lucide-react";
 
-export default function Page() {
-  const posts = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      accent: "text-blue-600"
+    },
+    badges: {
+      category: "bg-blue-100 text-blue-600"
+    }
+  },
+  
+  // Page Header
+  page: {
+    title: "Blog",
+    description: "Latest news and fashion insights"
+  },
+  
+  // Blog Posts (Edit posts here!)
+  posts: [
     {
       id: 1,
       title: "Effortlessly Blends The Carefree Style",
       category: "Accessories",
       author: "Admin",
       date: "March 15, 2024",
-      excerpt: "Discover the latest trends in fashion accessories that blend style with comfort."
+      excerpt: "Discover the latest trends in fashion accessories that blend style with comfort.",
+      link: "/ecomus-blog-post-1"
     },
     {
       id: 2,
@@ -19,7 +44,8 @@ export default function Page() {
       category: "Accessories",
       author: "Admin",
       date: "March 12, 2024",
-      excerpt: "Explore our exclusive collection of limited edition sports accessories."
+      excerpt: "Explore our exclusive collection of limited edition sports accessories.",
+      link: "/ecomus-blog-post-2"
     },
     {
       id: 3,
@@ -27,7 +53,8 @@ export default function Page() {
       category: "Fashion",
       author: "Admin",
       date: "March 10, 2024",
-      excerpt: "Learn about the fashion trends that are making waves this season."
+      excerpt: "Learn about the fashion trends that are making waves this season.",
+      link: "/ecomus-blog-post-3"
     },
     {
       id: 4,
@@ -35,7 +62,8 @@ export default function Page() {
       category: "Fashion",
       author: "Admin",
       date: "March 8, 2024",
-      excerpt: "Get ready for summer with these must-have fashion pieces."
+      excerpt: "Get ready for summer with these must-have fashion pieces.",
+      link: "/ecomus-blog-post-4"
     },
     {
       id: 5,
@@ -43,7 +71,8 @@ export default function Page() {
       category: "Fashion",
       author: "Admin",
       date: "March 5, 2024",
-      excerpt: "How to build a sustainable wardrobe without compromising on style."
+      excerpt: "How to build a sustainable wardrobe without compromising on style.",
+      link: "/ecomus-blog-post-5"
     },
     {
       id: 6,
@@ -51,23 +80,38 @@ export default function Page() {
       category: "Accessories",
       author: "Admin",
       date: "March 3, 2024",
-      excerpt: "The perfect accessories can transform any outfit from ordinary to extraordinary."
+      excerpt: "The perfect accessories can transform any outfit from ordinary to extraordinary.",
+      link: "/ecomus-blog-post-6"
     }
-  ];
+  ],
+  
+  // Grid Configuration
+  grid: {
+    columns: {
+      mobile: "grid-cols-1",
+      tablet: "md:grid-cols-2",
+      desktop: "lg:grid-cols-3"
+    },
+    gap: "gap-8"
+  }
+};
+
+export default function Page() {
+  const { colors, page, posts, grid } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-gray-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
-          <p className="text-gray-600 text-lg">Latest news and fashion insights</p>
+          <h1 className={`text-4xl font-bold ${colors.text.primary} mb-4`}>{page.title}</h1>
+          <p className={`${colors.text.secondary} text-lg`}>{page.description}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className={`grid ${grid.columns.mobile} ${grid.columns.tablet} ${grid.columns.desktop} ${grid.gap}`}>
           {posts.map((post, index) => (
             <motion.article
               key={post.id}
@@ -76,7 +120,7 @@ export default function Page() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -5 }}
-              className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden"
+              className={`${colors.card} rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden`}
             >
               <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200">
                 <div className="w-full h-full flex items-center justify-center">
@@ -85,7 +129,7 @@ export default function Page() {
               </div>
 
               <div className="p-6">
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                <div className={`flex items-center gap-4 text-sm ${colors.text.secondary} mb-3`}>
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
                     {post.date}
@@ -96,22 +140,22 @@ export default function Page() {
                   </span>
                 </div>
 
-                <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                <span className={`inline-block ${colors.badges.category} text-xs font-semibold px-3 py-1 rounded-full mb-3`}>
                   {post.category}
                 </span>
 
-                <h2 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+                <h2 className={`text-xl font-bold ${colors.text.primary} mb-3 hover:${colors.text.accent} transition-colors`}>
                   {post.title}
                 </h2>
 
-                <p className="text-gray-600 mb-4 line-clamp-2">
+                <p className={`${colors.text.secondary} mb-4 line-clamp-2`}>
                   {post.excerpt}
                 </p>
 
                 <motion.a
-                  href="#"
+                  href={post.link}
                   whileHover={{ x: 5 }}
-                  className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
+                  className={`inline-flex items-center gap-2 ${colors.text.accent} font-semibold hover:text-blue-700`}
                 >
                   Read More
                   <ArrowRight className="w-4 h-4" />
@@ -124,4 +168,3 @@ export default function Page() {
     </main>
   );
 }
-

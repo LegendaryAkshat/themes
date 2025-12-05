@@ -3,8 +3,33 @@
 import { motion } from "framer-motion";
 import { Linkedin, Twitter, Mail, Github } from "lucide-react";
 
-export default function Page() {
-  const team = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gradient-to-br from-gray-50 via-white to-blue-50/30",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-blue-600"
+    },
+    badges: {
+      background: "bg-blue-50",
+      text: "text-blue-600"
+    }
+  },
+  
+  // Page Header
+  header: {
+    badge: "Meet the Team",
+    title: "Our",
+    titleAccent: "Leadership Team",
+    description: "The talented individuals driving our vision forward."
+  },
+  
+  // Team Members (Edit team members here!)
+  team: [
     {
       name: "Sarah Chen",
       role: "Chief Executive Officer",
@@ -53,10 +78,14 @@ export default function Page() {
       gradient: "from-indigo-500 to-blue-500",
       social: { linkedin: "#" }
     }
-  ];
+  ]
+};
+
+export default function Page() {
+  const { colors, header, team } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <section className="px-6 py-24 max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -69,18 +98,18 @@ export default function Page() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring" }}
-            className="inline-block text-sm uppercase tracking-wider text-blue-600 bg-blue-50 px-4 py-2 rounded-full font-semibold mb-6"
+            className={`inline-block text-sm uppercase tracking-wider ${colors.badges.text} ${colors.badges.background} px-4 py-2 rounded-full font-semibold mb-6`}
           >
-            Meet the Team
+            {header.badge}
           </motion.span>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-            Our
+          <h1 className={`text-5xl md:text-7xl font-bold ${colors.text.primary} mb-6`}>
+            {header.title}
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              Leadership Team
+              {header.titleAccent}
             </span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Passionate professionals dedicated to driving innovation and delivering exceptional results.
+          <p className={`text-lg ${colors.text.primary} max-w-2xl mx-auto`}>
+            {header.description}
           </p>
         </motion.div>
 
@@ -89,91 +118,45 @@ export default function Page() {
           {team.map((member, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all overflow-hidden"
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -8 }}
+              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow"
             >
-              {/* Gradient Background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${member.gradient} opacity-0 group-hover:opacity-5 transition-opacity`} />
-
-              <div className="relative z-10">
-                {/* Avatar */}
-                <motion.div
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                  className={`w-32 h-32 bg-gradient-to-br ${member.gradient} rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl`}
-                >
-                  <span className="text-4xl font-bold text-white">{member.image}</span>
-                </motion.div>
-
-                {/* Info */}
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-blue-600 font-semibold mb-3">{member.role}</p>
-                  <p className="text-gray-600 leading-relaxed">{member.bio}</p>
-                </div>
-
-                {/* Social Links */}
-                <div className="flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {member.social.linkedin && (
-                    <motion.a
-                      whileHover={{ scale: 1.2, y: -2 }}
-                      href={member.social.linkedin}
-                      className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-blue-100 transition-colors"
-                    >
-                      <Linkedin className="w-5 h-5 text-gray-600" />
-                    </motion.a>
-                  )}
-                  {member.social.twitter && (
-                    <motion.a
-                      whileHover={{ scale: 1.2, y: -2 }}
-                      href={member.social.twitter}
-                      className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-blue-100 transition-colors"
-                    >
-                      <Twitter className="w-5 h-5 text-gray-600" />
-                    </motion.a>
-                  )}
-                  {member.social.github && (
-                    <motion.a
-                      whileHover={{ scale: 1.2, y: -2 }}
-                      href={member.social.github}
-                      className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    >
-                      <Github className="w-5 h-5 text-gray-600" />
-                    </motion.a>
-                  )}
-                </div>
+              <div className={`w-20 h-20 bg-gradient-to-br ${member.gradient} rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6`}>
+                {member.image}
+              </div>
+              <h3 className={`text-xl font-bold ${colors.text.primary} mb-2`}>{member.name}</h3>
+              <p className={`text-sm ${colors.text.secondary} mb-4`}>{member.role}</p>
+              <p className={`${colors.text.primary} mb-6 leading-relaxed`}>{member.bio}</p>
+              <div className="flex gap-3">
+                {member.social.linkedin && (
+                  <a href={member.social.linkedin} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <Linkedin className="w-5 h-5 text-gray-600" />
+                  </a>
+                )}
+                {member.social.twitter && (
+                  <a href={member.social.twitter} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <Twitter className="w-5 h-5 text-gray-600" />
+                  </a>
+                )}
+                {member.social.github && (
+                  <a href={member.social.github} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <Github className="w-5 h-5 text-gray-600" />
+                  </a>
+                )}
+                {member.social.email && (
+                  <a href={member.social.email} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <Mail className="w-5 h-5 text-gray-600" />
+                  </a>
+                )}
               </div>
             </motion.div>
           ))}
         </div>
-
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-20 text-center"
-        >
-          <div className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-2xl">
-            <p className="text-2xl font-light leading-relaxed max-w-3xl mb-6">
-              Join our team and help shape the future. We're always looking for talented individuals.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              View Open Positions
-            </motion.button>
-          </div>
-        </motion.div>
       </section>
     </main>
   );
 }
-

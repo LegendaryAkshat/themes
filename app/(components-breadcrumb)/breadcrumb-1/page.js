@@ -5,14 +5,36 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Home, ChevronRight } from "lucide-react";
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-100",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      active: "text-blue-600",
+      hover: "hover:text-blue-600"
+    }
+  },
+  
+  // Breadcrumbs (Edit breadcrumb items here!)
+  breadcrumbs: [
+    { label: "Home", href: "#", isActive: false },
+    { label: "Shop", href: "#", isActive: false },
+    { label: "Electronics", href: "#", isActive: true }
+  ]
+};
+
 export default function Page() {
   const containerRef = useRef(null);
+  const { colors, breadcrumbs } = pageConfig;
 
   useEffect(() => {
     if (!containerRef.current) return;
-
     const items = containerRef.current.querySelectorAll('.breadcrumb-item');
-    
     items.forEach((item, index) => {
       gsap.fromTo(
         item,
@@ -28,14 +50,8 @@ export default function Page() {
     });
   }, []);
 
-  const breadcrumbs = [
-    { label: "Home", href: "#", isActive: false },
-    { label: "Shop", href: "#", isActive: false },
-    { label: "Electronics", href: "#", isActive: true }
-  ];
-
   return (
-    <main className="min-h-screen w-full bg-gray-100 text-gray-900">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary}`}>
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -48,7 +64,7 @@ export default function Page() {
               {index === 0 ? (
                 <motion.a
                   href={crumb.href}
-                  className="breadcrumb-item flex items-center gap-1 text-gray-600 hover:text-blue-600 transition-colors"
+                  className={`breadcrumb-item flex items-center gap-1 ${colors.text.secondary} ${colors.text.hover} transition-colors`}
                   whileHover={{ scale: 1.1 }}
                 >
                   <Home className="w-4 h-4" />
@@ -59,8 +75,8 @@ export default function Page() {
                   href={crumb.href}
                   className={`breadcrumb-item ${
                     crumb.isActive 
-                      ? 'text-blue-600 font-semibold' 
-                      : 'text-gray-600 hover:text-blue-600'
+                      ? `${colors.text.active} font-semibold` 
+                      : `${colors.text.secondary} ${colors.text.hover}`
                   } transition-colors`}
                   whileHover={{ scale: 1.05 }}
                 >
@@ -77,9 +93,3 @@ export default function Page() {
     </main>
   );
 }
-
-
-
-
-
-

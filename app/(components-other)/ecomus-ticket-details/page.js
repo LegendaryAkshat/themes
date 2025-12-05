@@ -4,10 +4,36 @@ import { motion } from "framer-motion";
 import { MessageSquare, Send, User, Clock } from "lucide-react";
 import { useState } from "react";
 
-export default function Page() {
-  const [message, setMessage] = useState("");
-
-  const ticket = {
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      message: "text-gray-700"
+    },
+    borders: {
+      default: "border-gray-200"
+    },
+    buttons: {
+      primary: "bg-blue-600 hover:bg-blue-700 text-white"
+    },
+    badges: {
+      status: "bg-blue-100 text-blue-800"
+    },
+    messages: {
+      user: "bg-blue-50 ml-8",
+      support: "bg-gray-50 mr-8"
+    }
+  },
+  
+  // Ticket Information (Edit ticket details here!)
+  ticket: {
     id: "#12345",
     subject: "Order Delivery Issue",
     status: "Open",
@@ -26,29 +52,49 @@ export default function Page() {
         time: "1 hour ago"
       }
     ]
+  },
+  
+  // Actions
+  actions: {
+    sendButton: {
+      text: "Send",
+      icon: "Send"
+    }
+  }
+};
+
+export default function Page() {
+  const [message, setMessage] = useState("");
+  const { colors, ticket, actions } = pageConfig;
+
+  const iconMap = {
+    MessageSquare,
+    Send,
+    User,
+    Clock
   };
 
   return (
-    <main className="min-h-screen w-full bg-gray-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-lg shadow-md p-6 mb-6"
+          className={`${colors.card} rounded-lg shadow-md p-6 mb-6`}
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">{ticket.subject}</h1>
-              <p className="text-gray-600">Ticket {ticket.id} • {ticket.date}</p>
+              <h1 className={`text-2xl font-bold ${colors.text.primary} mb-2`}>{ticket.subject}</h1>
+              <p className={colors.text.secondary}>Ticket {ticket.id} • {ticket.date}</p>
             </div>
-            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+            <span className={`${colors.badges.status} px-3 py-1 rounded-full text-sm font-semibold`}>
               {ticket.status}
             </span>
           </div>
         </motion.div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="font-semibold text-gray-900 mb-4">Conversation</h2>
+        <div className={`${colors.card} rounded-lg shadow-md p-6 mb-6`}>
+          <h2 className={`font-semibold ${colors.text.primary} mb-4`}>Conversation</h2>
           <div className="space-y-4">
             {ticket.messages.map((msg, index) => (
               <motion.div
@@ -58,40 +104,43 @@ export default function Page() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 className={`p-4 rounded-lg ${
-                  msg.sender === "You" ? "bg-blue-50 ml-8" : "bg-gray-50 mr-8"
+                  msg.sender === "You" ? colors.messages.user : colors.messages.support
                 }`}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <User className="w-4 h-4 text-gray-600" />
-                  <span className="font-semibold text-gray-900">{msg.sender}</span>
-                  <span className="text-xs text-gray-500 flex items-center gap-1">
+                  <span className={`font-semibold ${colors.text.primary}`}>{msg.sender}</span>
+                  <span className={`text-xs ${colors.text.secondary} flex items-center gap-1`}>
                     <Clock className="w-3 h-3" />
                     {msg.time}
                   </span>
                 </div>
-                <p className="text-gray-700">{msg.text}</p>
+                <p className={colors.text.message}>{msg.text}</p>
               </motion.div>
             ))}
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className={`${colors.card} rounded-lg shadow-md p-6`}>
           <form className="flex gap-4">
             <input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type your message..."
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`flex-1 px-4 py-3 border ${colors.borders.default} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             <motion.button
               type="submit"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
+              className={`${colors.buttons.primary} px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2`}
             >
-              <Send className="w-5 h-5" />
-              Send
+              {(() => {
+                const SendIcon = iconMap[actions.sendButton.icon];
+                return <SendIcon className="w-5 h-5" />;
+              })()}
+              {actions.sendButton.text}
             </motion.button>
           </form>
         </div>
@@ -99,4 +148,3 @@ export default function Page() {
     </main>
   );
 }
-

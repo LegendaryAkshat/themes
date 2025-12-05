@@ -10,9 +10,52 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-700"
+    },
+    links: {
+      default: "text-orange-500 hover:text-orange-600",
+      icon: "text-gray-700 hover:text-orange-500"
+    },
+    borders: {
+      section: "border-b border-gray-200"
+    }
+  },
+  
+  // Content
+  content: {
+    message: "Free Express Shipping on orders $200!",
+    cta: {
+      text: "Click and Shop Now.",
+      link: "#"
+    },
+    links: [
+      { icon: "Package", text: "Order Tracking", link: "#" },
+      { icon: "Globe", text: "English", link: "#" },
+      { icon: "DollarSign", text: "USD", link: "#" }
+    ]
+  },
+  
+  // Icon Map
+  iconMap: {
+    Package,
+    Globe,
+    DollarSign
+  }
+};
+
 export default function Page() {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
+  const { colors, content, iconMap } = pageConfig;
 
   useEffect(() => {
     if (!sectionRef.current || !textRef.current) return;
@@ -53,13 +96,13 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="min-h-screen w-full bg-white text-gray-900">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary}`}>
       <motion.section
         ref={sectionRef}
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="px-6 py-4 max-w-7xl mx-auto border-b border-gray-200"
+        className={`px-6 py-4 max-w-7xl mx-auto ${colors.borders.section}`}
       >
         <div className="flex items-center justify-between flex-wrap gap-4">
           <motion.div
@@ -70,17 +113,17 @@ export default function Page() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
-              className="text-sm md:text-base text-gray-700"
+              className={`text-sm md:text-base ${colors.text.secondary}`}
             >
-              Free Express Shipping on orders $200!
+              {content.message}
             </motion.span>
             <motion.a
-              href="#"
+              href={content.cta.link}
               whileHover={{ scale: 1.05, x: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="text-orange-500 hover:text-orange-600 font-semibold text-sm md:text-base flex items-center gap-1"
+              className={`${colors.links.default} font-semibold text-sm md:text-base flex items-center gap-1`}
             >
-              Click and Shop Now.
+              {content.cta.text}
               <motion.span
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
@@ -91,44 +134,29 @@ export default function Page() {
           </motion.div>
 
           <div className="flex items-center gap-6">
-            <motion.a
-              href="#"
-              whileHover={{ scale: 1.05, y: -2 }}
-              className="flex items-center gap-2 text-sm text-gray-700 hover:text-orange-500 transition-colors icon-item"
-            >
-              <Package className="w-4 h-4" />
-              <span>Order Tracking</span>
-            </motion.a>
-            
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-1 text-sm text-gray-700 hover:text-orange-500 transition-colors cursor-pointer icon-item"
-            >
-              <Globe className="w-4 h-4" />
-              <span>English</span>
-              <motion.div
-                animate={{ rotate: [0, 180, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-3 h-3"
-              >
-                ↓
-              </motion.div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-1 text-sm text-gray-700 hover:text-orange-500 transition-colors cursor-pointer icon-item"
-            >
-              <DollarSign className="w-4 h-4" />
-              <span>USD</span>
-              <motion.div
-                animate={{ rotate: [0, 180, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-3 h-3"
-              >
-                ↓
-              </motion.div>
-            </motion.div>
+            {content.links.map((link, index) => {
+              const Icon = iconMap[link.icon];
+              return (
+                <motion.a
+                  key={index}
+                  href={link.link}
+                  whileHover={{ scale: 1.05, y: index === 0 ? -2 : 0 }}
+                  className={`flex items-center gap-${index === 0 ? '2' : '1'} text-sm ${colors.links.icon} transition-colors icon-item`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{link.text}</span>
+                  {index > 0 && (
+                    <motion.div
+                      animate={{ rotate: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="w-3 h-3"
+                    >
+                      ↓
+                    </motion.div>
+                  )}
+                </motion.a>
+              );
+            })}
           </div>
         </div>
       </motion.section>

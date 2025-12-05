@@ -5,33 +5,125 @@ import { Search, ShoppingCart, Menu, Mail, ArrowLeft, Check } from "lucide-react
 import Link from "next/link";
 import { useState } from "react";
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Brand & Identity
+  brand: {
+    name: "Vercel Store",
+    homeLink: "/vercel-store-home",
+    logo: {
+      background: "bg-white",
+      icon: "bg-black"
+    }
+  },
+  
+  // Colors & Theme
+  colors: {
+    background: "bg-black",
+    card: "bg-gray-900",
+    text: {
+      primary: "text-white",
+      secondary: "text-gray-400",
+      link: "text-blue-400 hover:text-blue-300"
+    },
+    borders: {
+      default: "border-gray-800",
+      input: "border-gray-700"
+    },
+    buttons: {
+      primary: "bg-blue-600 hover:bg-blue-700",
+      icon: "hover:bg-gray-800"
+    },
+    success: {
+      background: "bg-green-100",
+      icon: "text-green-600"
+    }
+  },
+  
+  // Header Configuration
+  header: {
+    cart: {
+      enabled: true,
+      link: "/vercel-store-cart"
+    }
+  },
+  
+  // Page Content
+  page: {
+    title: "Reset Password",
+    description: "Enter your email to receive a password reset link",
+    backLink: {
+      text: "Back to login",
+      href: "/vercel-store-login"
+    }
+  },
+  
+  // Form Configuration
+  form: {
+    email: {
+      label: "Email Address",
+      placeholder: "your@email.com",
+      icon: "Mail"
+    },
+    submitButton: {
+      text: "Send Reset Link"
+    },
+    footer: {
+      text: "Remember your password?",
+      linkText: "Sign in",
+      link: "/vercel-store-login"
+    }
+  },
+  
+  // Success State
+  success: {
+    title: "Reset Link Sent",
+    description: "If an account exists with {email}, we've sent a password reset link to your email.",
+    buttonText: "Back to Login",
+    buttonLink: "/vercel-store-login"
+  }
+};
+
 export default function Page() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const { brand, colors, header, page, form, success } = pageConfig;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email.trim()) {
-      // In a real application, you would make an API call here to send the reset link
-      // For now, we'll just show the success state
       setSubmitted(true);
     }
   };
 
+  const iconMap = {
+    Mail,
+    ArrowLeft,
+    Check,
+    ShoppingCart
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      <header className="border-b border-gray-800">
+    <div className={`min-h-screen ${colors.background} ${colors.text.primary}`}>
+      <header className={`border-b ${colors.borders.default}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                <div className="w-4 h-4 bg-black rounded-sm"></div>
+            <Link href={brand.homeLink} className="flex items-center gap-2">
+              <div className={`w-8 h-8 ${brand.logo.background} rounded flex items-center justify-center`}>
+                <div className={`w-4 h-4 ${brand.logo.icon} rounded-sm`}></div>
               </div>
-              <span className="font-semibold text-lg">Vercel Store</span>
+              <span className="font-semibold text-lg">{brand.name}</span>
             </Link>
-            <button className="p-2 rounded-md hover:bg-gray-800 transition-colors">
-              <ShoppingCart className="w-6 h-6" />
-            </button>
+            {header.cart.enabled && (
+              <button 
+                onClick={() => window.location.href = header.cart.link}
+                className={`p-2 rounded-md ${colors.buttons.icon} transition-colors`}
+              >
+                <ShoppingCart className="w-6 h-6" />
+              </button>
+            )}
           </div>
         </nav>
       </header>
@@ -42,46 +134,46 @@ export default function Page() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6"
         >
-          <Link href="/login" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-4">
+          <Link href={page.backLink.href} className={`inline-flex items-center gap-2 ${colors.text.secondary} hover:${colors.text.primary} transition-colors mb-4`}>
             <ArrowLeft className="w-4 h-4" />
-            Back to login
+            {page.backLink.text}
           </Link>
           
           {!submitted ? (
             <>
               <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold mb-2">Reset Password</h1>
-                <p className="text-gray-400">Enter your email to receive a password reset link</p>
+                <h1 className={`text-4xl font-bold mb-2`}>{page.title}</h1>
+                <p className={colors.text.secondary}>{page.description}</p>
               </div>
               <form
                 onSubmit={handleSubmit}
-                className="bg-gray-900 rounded-lg border border-gray-800 p-8 space-y-6"
+                className={`${colors.card} rounded-lg border ${colors.borders.default} p-8 space-y-6`}
               >
                 <div>
-                  <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                  <label className={`block text-sm font-medium mb-2 flex items-center gap-2`}>
                     <Mail className="w-4 h-4" />
-                    Email Address
+                    {form.email.label}
                   </label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-700"
-                    placeholder="your@email.com"
+                    className={`w-full ${colors.card} border ${colors.borders.input} rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-700`}
+                    placeholder={form.email.placeholder}
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition-colors"
+                  className={`w-full ${colors.buttons.primary} text-white font-semibold py-3 px-6 rounded-md transition-colors`}
                 >
-                  Send Reset Link
+                  {form.submitButton.text}
                 </button>
-                <div className="text-center text-sm text-gray-400">
+                <div className={`text-center text-sm ${colors.text.secondary}`}>
                   <p>
-                    Remember your password?{" "}
-                    <Link href="/login" className="text-blue-400 hover:text-blue-300 underline">
-                      Sign in
+                    {form.footer.text}{" "}
+                    <Link href={form.footer.link} className={`${colors.text.link} underline`}>
+                      {form.footer.linkText}
                     </Link>
                   </p>
                 </div>
@@ -89,18 +181,18 @@ export default function Page() {
             </>
           ) : (
             <div className="text-center">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Check className="w-10 h-10 text-green-600" />
+              <div className={`w-20 h-20 ${colors.success.background} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                <Check className={`w-10 h-10 ${colors.success.icon}`} />
               </div>
-              <h2 className="text-2xl font-bold mb-2">Reset Link Sent</h2>
-              <p className="text-gray-400 mb-6">
-                If an account exists with {email}, we've sent a password reset link to your email.
+              <h2 className={`text-2xl font-bold mb-2`}>{success.title}</h2>
+              <p className={`${colors.text.secondary} mb-6`}>
+                {success.description.replace('{email}', email)}
               </p>
               <Link
-                href="/login"
-                className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition-colors"
+                href={success.buttonLink}
+                className={`inline-block px-6 py-3 ${colors.buttons.primary} text-white font-semibold rounded-md transition-colors`}
               >
-                Back to Sign In
+                {success.buttonText}
               </Link>
             </div>
           )}
@@ -109,4 +201,3 @@ export default function Page() {
     </div>
   );
 }
-

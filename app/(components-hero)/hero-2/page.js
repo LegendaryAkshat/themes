@@ -4,8 +4,72 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Star, TrendingUp, Users } from "lucide-react";
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    badges: {
+      background: "bg-blue-50",
+      text: "text-blue-600",
+      border: "border-blue-100"
+    },
+    buttons: {
+      primary: "bg-gradient-to-r from-blue-600 to-purple-600",
+      secondary: "border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50"
+    },
+    gradients: {
+      title: "bg-gradient-to-r from-blue-600 to-purple-600",
+      background: "bg-gradient-to-br from-blue-50 via-white to-purple-50",
+      image: "bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400",
+      icon: "bg-gradient-to-br from-blue-100 to-purple-100"
+    },
+    borders: {
+      divider: "border-gray-200"
+    }
+  },
+  
+  // Content (Edit content here!)
+  content: {
+    badge: "New Collection 2024",
+    title: {
+      line1: "Discover Your",
+      line2: "Perfect Style"
+    },
+    description: "Explore our curated collection of premium products designed to elevate your lifestyle. Quality meets innovation in every piece.",
+    buttons: {
+      primary: "Shop Now",
+      secondary: "Learn More"
+    }
+  },
+  
+  // Stats (Edit stats here!)
+  stats: [
+    { icon: "Users", value: "50K+", label: "Happy Customers" },
+    { icon: "Star", value: "4.9", label: "Rating" },
+    { icon: "TrendingUp", value: "200+", label: "Products" }
+  ],
+  
+  // Image Content
+  image: {
+    placeholder: "📱",
+    label: "Premium Product",
+    cards: [
+      { label: "New Arrival", sublabel: "Just in" },
+      { label: "Best Seller", sublabel: "Top rated" }
+    ]
+  }
+};
+
 export default function Page() {
   const sectionRef = useRef(null);
+  const { colors, content, stats, image } = pageConfig;
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -16,20 +80,20 @@ export default function Page() {
   const y = useTransform(scrollYProgress, [0, 0.5], [0, -50]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
-  const stats = [
-    { icon: Users, value: "50K+", label: "Happy Customers" },
-    { icon: Star, value: "4.9", label: "Rating" },
-    { icon: TrendingUp, value: "200+", label: "Products" }
-  ];
+  const iconMap = {
+    ArrowRight,
+    Star,
+    TrendingUp,
+    Users
+  };
 
   return (
-    <main className="min-h-screen w-full bg-white overflow-hidden">
+    <main className={`min-h-screen w-full ${colors.background} overflow-hidden`}>
       <motion.section
         ref={sectionRef}
         style={{ opacity, y, scale }}
         className="relative min-h-screen flex items-center"
       >
-        {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, #000 1px, transparent 0)`,
@@ -37,12 +101,10 @@ export default function Page() {
           }} />
         </div>
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+        <div className={`absolute inset-0 ${colors.gradients.background}`} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Side - Content */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -55,8 +117,8 @@ export default function Page() {
                 transition={{ delay: 0.2 }}
                 className="inline-block"
               >
-                <span className="text-sm uppercase tracking-wider text-blue-600 bg-blue-50 px-4 py-2 rounded-full font-semibold border border-blue-100">
-                  New Collection 2024
+                <span className={`text-sm uppercase tracking-wider ${colors.badges.text} ${colors.badges.background} px-4 py-2 rounded-full font-semibold ${colors.badges.border}`}>
+                  {content.badge}
                 </span>
               </motion.div>
 
@@ -64,12 +126,12 @@ export default function Page() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight"
+                className={`text-5xl md:text-6xl lg:text-7xl font-bold ${colors.text.primary} leading-tight`}
               >
-                Discover Your
+                {content.title.line1}
                 <br />
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Perfect Style
+                <span className={`bg-clip-text text-transparent ${colors.gradients.title}`}>
+                  {content.title.line2}
                 </span>
               </motion.h1>
 
@@ -77,10 +139,9 @@ export default function Page() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-lg text-gray-600 leading-relaxed max-w-lg"
+                className={`text-lg ${colors.text.secondary} leading-relaxed max-w-lg`}
               >
-                Explore our curated collection of premium products designed to elevate your lifestyle. 
-                Quality meets innovation in every piece.
+                {content.description}
               </motion.p>
 
               <motion.div
@@ -92,10 +153,10 @@ export default function Page() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group relative bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg overflow-hidden shadow-lg hover:shadow-xl transition-all"
+                  className={`group relative ${colors.buttons.primary} text-white px-8 py-4 rounded-full font-semibold text-lg overflow-hidden shadow-lg hover:shadow-xl transition-all`}
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    Shop Now
+                    {content.buttons.primary}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                   <motion.div
@@ -107,21 +168,20 @@ export default function Page() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-full font-semibold text-lg border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-all"
+                  className={`px-8 py-4 rounded-full font-semibold text-lg ${colors.buttons.secondary} transition-all`}
                 >
-                  Learn More
+                  {content.buttons.secondary}
                 </motion.button>
               </motion.div>
 
-              {/* Stats */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200"
+                className={`grid grid-cols-3 gap-6 pt-8 border-t ${colors.borders.divider}`}
               >
                 {stats.map((stat, index) => {
-                  const Icon = stat.icon;
+                  const Icon = iconMap[stat.icon];
                   return (
                     <motion.div
                       key={index}
@@ -131,19 +191,18 @@ export default function Page() {
                       className="text-center"
                     >
                       <div className="flex justify-center mb-2">
-                        <div className="p-2 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg">
+                        <div className={`p-2 ${colors.gradients.icon} rounded-lg`}>
                           <Icon className="w-5 h-5 text-blue-600" />
                         </div>
                       </div>
-                      <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-                      <div className="text-sm text-gray-600">{stat.label}</div>
+                      <div className={`text-2xl font-bold ${colors.text.primary}`}>{stat.value}</div>
+                      <div className={`text-sm ${colors.text.secondary}`}>{stat.label}</div>
                     </motion.div>
                   );
                 })}
               </motion.div>
             </motion.div>
 
-            {/* Right Side - Image */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -151,10 +210,8 @@ export default function Page() {
               className="relative"
             >
               <div className="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-                {/* Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400" />
+                <div className={`absolute inset-0 ${colors.gradients.image}`} />
                 
-                {/* Decorative Elements */}
                 <motion.div
                   animate={{
                     y: [0, -20, 0],
@@ -180,55 +237,39 @@ export default function Page() {
                   className="absolute bottom-20 left-20 w-40 h-40 bg-white/20 rounded-full blur-2xl"
                 />
 
-                {/* Placeholder Content */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center text-white">
                     <div className="w-64 h-64 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mb-4 border border-white/30">
-                      <div className="text-6xl">📱</div>
+                      <div className="text-6xl">{image.placeholder}</div>
                     </div>
-                    <p className="text-lg font-semibold">Premium Product</p>
+                    <p className="text-lg font-semibold">{image.label}</p>
                   </div>
                 </div>
 
-                {/* Floating Cards */}
-                <motion.div
-                  animate={{
-                    y: [0, -15, 0],
-                    rotate: [0, 3, 0]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute top-10 left-10 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg"
-                >
-                  <div className="text-sm font-semibold text-gray-900">New Arrival</div>
-                  <div className="text-xs text-gray-600">Just in</div>
-                </motion.div>
-
-                <motion.div
-                  animate={{
-                    y: [0, 15, 0],
-                    rotate: [0, -3, 0]
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5
-                  }}
-                  className="absolute bottom-10 right-10 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg"
-                >
-                  <div className="text-sm font-semibold text-gray-900">Best Seller</div>
-                  <div className="text-xs text-gray-600">Top rated</div>
-                </motion.div>
+                {image.cards.map((card, index) => (
+                  <motion.div
+                    key={index}
+                    animate={{
+                      y: [0, index === 0 ? -15 : 15, 0],
+                      rotate: [0, index === 0 ? 3 : -3, 0]
+                    }}
+                    transition={{
+                      duration: index === 0 ? 4 : 5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.5
+                    }}
+                    className={`absolute ${index === 0 ? 'top-10 left-10' : 'bottom-10 right-10'} bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg`}
+                  >
+                    <div className="text-sm font-semibold text-gray-900">{card.label}</div>
+                    <div className="text-xs text-gray-600">{card.sublabel}</div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -251,4 +292,3 @@ export default function Page() {
     </main>
   );
 }
-

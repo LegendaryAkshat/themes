@@ -4,39 +4,64 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function Page() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const slides = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    text: {
+      primary: "text-white"
+    },
+    buttons: {
+      primary: "bg-white text-gray-900 hover:bg-gray-100",
+      navigation: "bg-white/20 hover:bg-white/30 backdrop-blur-sm"
+    }
+  },
+  
+  // Slides (Edit slides here!)
+  slides: [
     {
       title: "Glamorous",
       subtitle: "Glam",
       description: "From casual to formal, we've got you covered",
       buttonText: "Shop collection",
-      bgGradient: "from-pink-500 via-purple-500 to-indigo-600"
+      gradient: "from-pink-500 via-purple-500 to-indigo-600"
     },
     {
       title: "Simple",
       subtitle: "Style",
       description: "From casual to formal, we've got you covered",
       buttonText: "Shop collection",
-      bgGradient: "from-blue-500 via-cyan-500 to-teal-600"
+      gradient: "from-blue-500 via-cyan-500 to-teal-600"
     },
     {
       title: "Glamorous",
       subtitle: "Glam",
       description: "From casual to formal, we've got you covered",
       buttonText: "Shop collection",
-      bgGradient: "from-purple-500 via-pink-500 to-rose-600"
+      gradient: "from-purple-500 via-pink-500 to-rose-600"
     }
-  ];
+  ],
+  
+  // Animation Settings
+  animations: {
+    autoSlideInterval: 5000,
+    slideDuration: 0.8
+  }
+};
+
+export default function Page() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const { colors, slides, animations } = pageConfig;
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, animations.autoSlideInterval);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, animations.autoSlideInterval]);
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -51,7 +76,7 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="relative h-[600px] md:h-[700px] overflow-hidden">
         {slides.map((slide, index) => (
           <motion.div
@@ -61,11 +86,11 @@ export default function Page() {
               opacity: currentSlide === index ? 1 : 0,
               scale: currentSlide === index ? 1 : 1.1
             }}
-            transition={{ duration: 0.8 }}
-            className={`absolute inset-0 bg-gradient-to-r ${slide.bgGradient}`}
+            transition={{ duration: animations.slideDuration }}
+            className={`absolute inset-0 bg-gradient-to-r ${slide.gradient}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-              <div className="text-white max-w-2xl">
+              <div className={`text-white max-w-2xl`}>
                 <motion.h1
                   initial={{ opacity: 0, y: 30 }}
                   animate={{
@@ -108,7 +133,7 @@ export default function Page() {
                   transition={{ delay: 0.5, duration: 0.6 }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors"
+                  className={`${colors.buttons.primary} px-8 py-4 rounded-lg font-semibold text-lg transition-colors`}
                 >
                   {slide.buttonText}
                 </motion.button>
@@ -117,21 +142,19 @@ export default function Page() {
           </motion.div>
         ))}
 
-        {/* Navigation Arrows */}
         <button
           onClick={goToPrevious}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all z-10"
+          className={`absolute left-4 top-1/2 transform -translate-y-1/2 ${colors.buttons.navigation} rounded-full p-3 transition-all z-10`}
         >
           <ChevronLeft className="w-6 h-6 text-white" />
         </button>
         <button
           onClick={goToNext}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all z-10"
+          className={`absolute right-4 top-1/2 transform -translate-y-1/2 ${colors.buttons.navigation} rounded-full p-3 transition-all z-10`}
         >
           <ChevronRight className="w-6 h-6 text-white" />
         </button>
 
-        {/* Dots Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
           {slides.map((_, index) => (
             <button
@@ -149,4 +172,3 @@ export default function Page() {
     </main>
   );
 }
-

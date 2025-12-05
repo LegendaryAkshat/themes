@@ -4,43 +4,85 @@ import { motion } from "framer-motion";
 import { Grid, List } from "lucide-react";
 import { useState } from "react";
 
-export default function Page() {
-  const [viewMode, setViewMode] = useState("grid");
-
-  const products = Array.from({ length: 12 }, (_, i) => ({
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    buttons: {
+      viewActive: "bg-blue-600 text-white",
+      viewInactive: "bg-gray-100 text-gray-600 hover:bg-gray-200"
+    }
+  },
+  
+  // Page Header
+  header: {
+    title: "Shop - Right Sidebar",
+    description: "Browse our collection with filters on the right"
+  },
+  
+  // Products (Edit products here!)
+  products: Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     name: `Product ${i + 1}`,
     price: (Math.random() * 100 + 10).toFixed(2),
     originalPrice: Math.random() > 0.5 ? (Math.random() * 150 + 50).toFixed(2) : null,
     rating: (Math.random() * 1 + 4).toFixed(1)
-  }));
+  })),
+  
+  // Filters
+  filters: {
+    priceRanges: ["$0 - $50", "$50 - $100", "$100+"],
+    categories: ["Clothing", "Accessories", "Shoes"],
+    brands: ["Brand A", "Brand B", "Brand C"],
+    ratings: [5, 4, 3]
+  },
+  
+  // Grid Configuration
+  grid: {
+    products: {
+      mobile: "grid-cols-1",
+      tablet: "sm:grid-cols-2",
+      desktop: "lg:grid-cols-3"
+    },
+    gap: "gap-6"
+  }
+};
+
+export default function Page() {
+  const [viewMode, setViewMode] = useState("grid");
+  const { colors, header, products, filters, grid } = pageConfig;
 
   return (
-    <main className="min-h-screen w-full bg-gray-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Shop - Right Sidebar</h1>
-          <p className="text-gray-600">Browse our collection with filters on the right</p>
+          <h1 className={`text-3xl font-bold ${colors.text.primary} mb-2`}>{header.title}</h1>
+          <p className={colors.text.secondary}>{header.description}</p>
         </motion.div>
 
         <div className="flex gap-6">
-          {/* Products Grid */}
           <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center justify-between">
-              <span className="text-gray-600 text-sm">
+            <div className={`${colors.card} rounded-lg shadow-sm p-4 mb-6 flex items-center justify-between`}>
+              <span className={`${colors.text.secondary} text-sm`}>
                 {products.length} products
               </span>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setViewMode("grid")}
                   className={`p-2 rounded-lg transition-colors ${
-                    viewMode === "grid"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    viewMode === "grid" ? colors.buttons.viewActive : colors.buttons.viewInactive
                   }`}
                 >
                   <Grid className="w-5 h-5" />
@@ -48,9 +90,7 @@ export default function Page() {
                 <button
                   onClick={() => setViewMode("list")}
                   className={`p-2 rounded-lg transition-colors ${
-                    viewMode === "list"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    viewMode === "list" ? colors.buttons.viewActive : colors.buttons.viewInactive
                   }`}
                 >
                   <List className="w-5 h-5" />
@@ -61,7 +101,7 @@ export default function Page() {
             <div
               className={
                 viewMode === "grid"
-                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                  ? `grid ${grid.products.mobile} ${grid.products.tablet} ${grid.products.desktop} ${grid.gap}`
                   : "space-y-4"
               }
             >
@@ -72,7 +112,7 @@ export default function Page() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className={`bg-white rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden ${
+                  className={`${colors.card} rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden ${
                     viewMode === "list" ? "flex gap-4" : ""
                   }`}
                 >
@@ -86,102 +126,87 @@ export default function Page() {
                     </div>
                   </div>
                   <div className="p-4 flex-1">
-                    <h3 className="font-semibold text-gray-900 mb-2">{product.name}</h3>
+                    <h3 className={`font-semibold ${colors.text.primary} mb-2`}>{product.name}</h3>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-lg font-bold text-gray-900">
+                      <span className={`text-lg font-bold ${colors.text.primary}`}>
                         ${product.price}
                       </span>
                       {product.originalPrice && (
-                        <span className="text-sm text-gray-500 line-through">
+                        <span className={`text-sm ${colors.text.secondary} line-through`}>
                           ${product.originalPrice}
                         </span>
                       )}
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="text-yellow-400">★</span>
-                      <span className="text-sm text-gray-600">{product.rating}</span>
+                      <span className={`text-sm ${colors.text.secondary}`}>★ {product.rating}</span>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
-
-            {/* Pagination */}
-            <div className="mt-8 flex justify-center gap-2">
-              {[1, 2, 3, 4, 5].map((page) => (
-                <button
-                  key={page}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
-                    page === 1
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
-            </div>
           </div>
 
-          {/* Right Sidebar Filters */}
           <motion.aside
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             className="w-64 bg-white rounded-lg shadow-sm p-6 h-fit sticky top-8"
           >
-            <h3 className="font-semibold text-gray-900 mb-6">Filters</h3>
+            <h3 className={`font-semibold ${colors.text.primary} mb-6`}>Filters</h3>
 
             <div className="space-y-6">
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-3">Price Range</h4>
+                <h4 className={`text-sm font-medium ${colors.text.secondary} mb-3`}>Price Range</h4>
                 <div className="space-y-2">
-                  {["$0 - $50", "$50 - $100", "$100 - $200", "$200+"].map((range) => (
-                    <label key={range} className="flex items-center gap-2">
+                  {filters.priceRanges.map((range, index) => (
+                    <label key={index} className="flex items-center gap-2">
                       <input type="checkbox" className="rounded" />
-                      <span className="text-sm text-gray-600">{range}</span>
+                      <span className={`text-sm ${colors.text.secondary}`}>{range}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-3">Category</h4>
+                <h4 className={`text-sm font-medium ${colors.text.secondary} mb-3`}>Category</h4>
                 <div className="space-y-2">
-                  {["Clothing", "Accessories", "Shoes", "Bags"].map((cat) => (
-                    <label key={cat} className="flex items-center gap-2">
+                  {filters.categories.map((category, index) => (
+                    <label key={index} className="flex items-center gap-2">
                       <input type="checkbox" className="rounded" />
-                      <span className="text-sm text-gray-600">{cat}</span>
+                      <span className={`text-sm ${colors.text.secondary}`}>{category}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-3">Size</h4>
-                <div className="flex flex-wrap gap-2">
-                  {["S", "M", "L", "XL", "XXL"].map((size) => (
-                    <button
-                      key={size}
-                      className="px-3 py-1 border border-gray-300 rounded hover:border-blue-600 hover:text-blue-600 transition-colors"
-                    >
-                      {size}
-                    </button>
+                <h4 className={`text-sm font-medium ${colors.text.secondary} mb-3`}>Brand</h4>
+                <div className="space-y-2">
+                  {filters.brands.map((brand, index) => (
+                    <label key={index} className="flex items-center gap-2">
+                      <input type="checkbox" className="rounded" />
+                      <span className={`text-sm ${colors.text.secondary}`}>{brand}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h4 className={`text-sm font-medium ${colors.text.secondary} mb-3`}>Rating</h4>
+                <div className="space-y-2">
+                  {filters.ratings.map((rating, index) => (
+                    <label key={index} className="flex items-center gap-2">
+                      <input type="checkbox" className="rounded" />
+                      <span className={`text-sm ${colors.text.secondary}`}>
+                        {rating}★ & above
+                      </span>
+                    </label>
                   ))}
                 </div>
               </div>
             </div>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full mt-6 bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
-            >
-              Apply Filters
-            </motion.button>
           </motion.aside>
         </div>
       </div>
     </main>
   );
 }
-

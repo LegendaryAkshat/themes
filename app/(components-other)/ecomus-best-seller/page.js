@@ -4,10 +4,48 @@ import { motion } from "framer-motion";
 import { Heart, ShoppingBag, Eye, Star } from "lucide-react";
 import { useState } from "react";
 
-export default function Page() {
-  const [wishlist, setWishlist] = useState(new Set());
-
-  const products = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-white",
+    card: {
+      container: "bg-white",
+      hover: "hover:shadow-xl"
+    },
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      hover: "group-hover:text-blue-600"
+    },
+    buttons: {
+      wishlist: {
+        active: "bg-red-500 text-white",
+        inactive: "bg-white/80 text-gray-700 hover:bg-white"
+      },
+      quickView: "bg-white/80 text-gray-700 hover:bg-white",
+      quickAdd: "bg-gray-900 text-white",
+      loadMore: "bg-gray-900 text-white hover:bg-gray-800"
+    },
+    borders: {
+      size: "border border-gray-200"
+    },
+    gradients: {
+      image: "bg-gradient-to-br from-gray-100 to-gray-200"
+    },
+    stars: "fill-yellow-400 text-yellow-400"
+  },
+  
+  // Page Header
+  header: {
+    title: "Best Seller",
+    description: "Shop the Latest Styles: Stay ahead of the curve with our newest arrivals"
+  },
+  
+  // Products (Edit products here!)
+  products: [
     {
       id: 1,
       name: "Ribbed Tank Top",
@@ -80,7 +118,46 @@ export default function Page() {
       sizes: ["S", "M", "L", "XL"],
       rating: 4.2
     }
-  ];
+  ],
+  
+  // Grid Configuration
+  grid: {
+    columns: {
+      mobile: "grid-cols-1",
+      tablet: "sm:grid-cols-2",
+      desktop: "lg:grid-cols-4"
+    },
+    gap: "gap-6"
+  },
+  
+  // Color Mapping
+  colorMap: {
+    orange: "#ff9500",
+    black: "#000",
+    white: "#fff",
+    brown: "#8b4513",
+    purple: "#a855f7",
+    green: "#10b981",
+    pink: "#ec4899",
+    blue: "#3b82f6",
+    "dark blue": "#1e3a8a",
+    beige: "#f5f5dc",
+    "light blue": "#93c5fd",
+    "light grey": "#d1d5db",
+    "light green": "#86efac",
+    "light purple": "#c084fc"
+  },
+  
+  // UI Text
+  ui: {
+    quickAdd: "Quick Add",
+    loadMore: "Load more"
+  }
+};
+
+export default function Page() {
+  const [wishlist, setWishlist] = useState(new Set());
+  const { colors, header, products, grid, colorMap, ui } = pageConfig;
 
   const toggleWishlist = (id) => {
     setWishlist((prev) => {
@@ -94,8 +171,13 @@ export default function Page() {
     });
   };
 
+  const getColorValue = (colorName) => {
+    const lower = colorName.toLowerCase();
+    return colorMap[lower] || colorMap[lower.replace(/\s+/g, "")] || "#ccc";
+  };
+
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -104,15 +186,15 @@ export default function Page() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Best Seller
+          <h2 className={`text-3xl md:text-4xl font-bold ${colors.text.primary} mb-4`}>
+            {header.title}
           </h2>
-          <p className="text-gray-600 text-lg">
-            Shop the Latest Styles: Stay ahead of the curve with our newest arrivals
+          <p className={`${colors.text.secondary} text-lg`}>
+            {header.description}
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className={`grid ${grid.columns.mobile} ${grid.columns.tablet} ${grid.columns.desktop} ${grid.gap}`}>
           {products.map((product, index) => (
             <motion.div
               key={product.id}
@@ -121,10 +203,10 @@ export default function Page() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               whileHover={{ y: -5 }}
-              className="group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+              className={`group ${colors.card.container} rounded-lg shadow-md ${colors.card.hover} transition-all duration-300 overflow-hidden`}
             >
               {/* Product Image */}
-              <div className="relative aspect-square bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+              <div className={`relative aspect-square ${colors.gradients.image} overflow-hidden`}>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-32 h-32 bg-gray-300 rounded-lg"></div>
                 </div>
@@ -136,9 +218,7 @@ export default function Page() {
                     whileTap={{ scale: 0.9 }}
                     onClick={() => toggleWishlist(product.id)}
                     className={`p-2 rounded-full backdrop-blur-sm ${
-                      wishlist.has(product.id)
-                        ? "bg-red-500 text-white"
-                        : "bg-white/80 text-gray-700 hover:bg-white"
+                      wishlist.has(product.id) ? colors.buttons.wishlist.active : colors.buttons.wishlist.inactive
                     }`}
                   >
                     <Heart className="w-4 h-4" fill={wishlist.has(product.id) ? "currentColor" : "none"} />
@@ -146,7 +226,7 @@ export default function Page() {
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-full bg-white/80 text-gray-700 hover:bg-white backdrop-blur-sm"
+                    className={`p-2 rounded-full ${colors.buttons.quickView} backdrop-blur-sm`}
                   >
                     <Eye className="w-4 h-4" />
                   </motion.button>
@@ -156,9 +236,9 @@ export default function Page() {
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}
                   whileHover={{ opacity: 1, y: 0 }}
-                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-all"
+                  className={`absolute bottom-4 left-1/2 transform -translate-x-1/2 ${colors.buttons.quickAdd} px-6 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-all`}
                 >
-                  Quick Add
+                  {ui.quickAdd}
                 </motion.button>
               </div>
 
@@ -170,7 +250,7 @@ export default function Page() {
                     {product.sizes.map((size) => (
                       <span
                         key={size}
-                        className="text-xs text-gray-500 border border-gray-200 px-2 py-1 rounded"
+                        className={`text-xs ${colors.text.secondary} ${colors.borders.size} px-2 py-1 rounded`}
                       >
                         {size}
                       </span>
@@ -178,7 +258,7 @@ export default function Page() {
                   </div>
                 )}
 
-                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                <h3 className={`font-semibold ${colors.text.primary} mb-2 ${colors.text.hover} transition-colors`}>
                   {product.name}
                 </h3>
 
@@ -189,23 +269,7 @@ export default function Page() {
                       <div
                         key={idx}
                         className="w-4 h-4 rounded-full border border-gray-300"
-                        style={{
-                          backgroundColor: color.toLowerCase().includes("orange")
-                            ? "#ff9500"
-                            : color.toLowerCase().includes("black")
-                            ? "#000"
-                            : color.toLowerCase().includes("white")
-                            ? "#fff"
-                            : color.toLowerCase().includes("brown")
-                            ? "#8b4513"
-                            : color.toLowerCase().includes("purple")
-                            ? "#a855f7"
-                            : color.toLowerCase().includes("green")
-                            ? "#10b981"
-                            : color.toLowerCase().includes("pink")
-                            ? "#ec4899"
-                            : "#ccc"
-                        }}
+                        style={{ backgroundColor: getColorValue(color) }}
                       />
                     ))}
                   </div>
@@ -214,13 +278,13 @@ export default function Page() {
                 {/* Price and Rating */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-lg font-bold text-gray-900">
+                    <span className={`text-lg font-bold ${colors.text.primary}`}>
                       ${product.price.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-gray-600">{product.rating}</span>
+                    <Star className={`w-4 h-4 ${colors.stars}`} />
+                    <span className={`text-sm ${colors.text.secondary}`}>{product.rating}</span>
                   </div>
                 </div>
               </div>
@@ -239,13 +303,12 @@ export default function Page() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
+            className={`${colors.buttons.loadMore} px-8 py-3 rounded-lg font-semibold transition-colors`}
           >
-            Load more
+            {ui.loadMore}
           </motion.button>
         </motion.div>
       </section>
     </main>
   );
 }
-

@@ -4,15 +4,78 @@ import { motion } from "framer-motion";
 import { CheckCircle, Package, Home, Download } from "lucide-react";
 import Link from "next/link";
 
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    borders: {
+      default: "border-gray-300"
+    },
+    buttons: {
+      primary: "bg-blue-600 text-white hover:bg-blue-700",
+      secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300",
+      outline: "border-2 border-gray-300 text-gray-900 hover:border-gray-400"
+    },
+    success: {
+      icon: "bg-green-100",
+      iconColor: "text-green-600"
+    }
+  },
+  
+  // Page Content
+  page: {
+    title: "Payment Successful!",
+    description: "Thank you for your purchase. Your order has been confirmed and will be processed shortly."
+  },
+  
+  // Order Details (Edit order details here!)
+  order: {
+    orderNumber: "#12345",
+    totalAmount: "$299.97",
+    paymentMethod: "Credit Card"
+  },
+  
+  // Action Buttons
+  actions: {
+    downloadInvoice: {
+      text: "Download Invoice",
+      icon: "Download",
+      enabled: true
+    },
+    viewOrders: {
+      text: "View Orders",
+      icon: "Package",
+      link: "/ecomus-account",
+      enabled: true
+    },
+    continueShopping: {
+      text: "Continue Shopping",
+      icon: "Home",
+      link: "/",
+      enabled: true
+    }
+  }
+};
+
 export default function Page() {
+  const { colors, page, order, actions } = pageConfig;
+
   return (
-    <main className="min-h-screen w-full bg-gray-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 200 }}
-          className="bg-white rounded-2xl shadow-xl p-12 text-center"
+          className={`${colors.card} rounded-2xl shadow-xl p-12 text-center`}
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -20,64 +83,69 @@ export default function Page() {
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
             className="inline-block mb-6"
           >
-            <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-16 h-16 text-green-600" />
+            <div className={`w-24 h-24 ${colors.success.icon} rounded-full flex items-center justify-center`}>
+              <CheckCircle className={`w-16 h-16 ${colors.success.iconColor}`} />
             </div>
           </motion.div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
-          <p className="text-gray-600 mb-8">
-            Thank you for your purchase. Your order has been confirmed and will be processed shortly.
+          <h1 className={`text-3xl font-bold ${colors.text.primary} mb-4`}>{page.title}</h1>
+          <p className={`${colors.text.secondary} mb-8`}>
+            {page.description}
           </p>
 
-          <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
+          <div className={`${colors.background} rounded-lg p-6 mb-8 text-left`}>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-gray-600">Order Number</span>
-              <span className="font-semibold text-gray-900">#12345</span>
+              <span className={colors.text.secondary}>Order Number</span>
+              <span className={`font-semibold ${colors.text.primary}`}>{order.orderNumber}</span>
             </div>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-gray-600">Total Amount</span>
-              <span className="font-semibold text-gray-900">$299.97</span>
+              <span className={colors.text.secondary}>Total Amount</span>
+              <span className={`font-semibold ${colors.text.primary}`}>{order.totalAmount}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">Payment Method</span>
-              <span className="font-semibold text-gray-900">Credit Card</span>
+              <span className={colors.text.secondary}>Payment Method</span>
+              <span className={`font-semibold ${colors.text.primary}`}>{order.paymentMethod}</span>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              <Download className="w-5 h-5" />
-              Download Invoice
-            </motion.button>
-            <Link href="/ecomus-account">
+            {actions.downloadInvoice.enabled && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-2 bg-gray-200 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors w-full sm:w-auto"
+                className={`flex items-center justify-center gap-2 ${colors.buttons.primary} px-6 py-3 rounded-lg font-semibold transition-colors`}
               >
-                <Package className="w-5 h-5" />
-                View Orders
+                <Download className="w-5 h-5" />
+                {actions.downloadInvoice.text}
               </motion.button>
-            </Link>
-            <Link href="/">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:border-gray-400 transition-colors w-full sm:w-auto"
-              >
-                <Home className="w-5 h-5" />
-                Continue Shopping
-              </motion.button>
-            </Link>
+            )}
+            {actions.viewOrders.enabled && (
+              <Link href={actions.viewOrders.link}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex items-center justify-center gap-2 ${colors.buttons.secondary} px-6 py-3 rounded-lg font-semibold transition-colors w-full sm:w-auto`}
+                >
+                  <Package className="w-5 h-5" />
+                  {actions.viewOrders.text}
+                </motion.button>
+              </Link>
+            )}
+            {actions.continueShopping.enabled && (
+              <Link href={actions.continueShopping.link}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex items-center justify-center gap-2 ${colors.buttons.outline} px-6 py-3 rounded-lg font-semibold transition-colors w-full sm:w-auto`}
+                >
+                  <Home className="w-5 h-5" />
+                  {actions.continueShopping.text}
+                </motion.button>
+              </Link>
+            )}
           </div>
         </motion.div>
       </div>
     </main>
   );
 }
-

@@ -10,24 +10,61 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function Page() {
-  const navRef = useRef(null);
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const { scrollYProgress } = useScroll();
-  const backgroundColor = useTransform(
-    scrollYProgress,
-    [0, 0.1],
-    ["rgba(251, 146, 60, 1)", "rgba(251, 146, 60, 0.95)"]
-  );
-
-  const navItems = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-orange-500",
+    text: {
+      primary: "text-white",
+      hover: "text-orange-100"
+    },
+    buttons: {
+      category: "bg-white text-orange-500",
+      shop: "bg-white text-orange-500"
+    },
+    nav: {
+      underline: "bg-white"
+    }
+  },
+  
+  // Navigation Items
+  navItems: [
     { name: "Home", hasDropdown: true },
     { name: "Shop", hasDropdown: false },
     { name: "Pages", hasDropdown: true },
     { name: "About", hasDropdown: false },
     { name: "Blog", hasDropdown: false },
     { name: "Contact", hasDropdown: false }
-  ];
+  ],
+  
+  // UI Text
+  ui: {
+    categoryButton: "All Categories",
+    shopButton: "Shop now"
+  },
+  
+  // Scroll Configuration
+  scroll: {
+    backgroundColorStart: "rgba(251, 146, 60, 1)",
+    backgroundColorEnd: "rgba(251, 146, 60, 0.95)",
+    scrollThreshold: [0, 0.1]
+  }
+};
+
+export default function Page() {
+  const navRef = useRef(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const { scrollYProgress } = useScroll();
+  const { colors, navItems, ui, scroll } = pageConfig;
+  
+  const backgroundColor = useTransform(
+    scrollYProgress,
+    scroll.scrollThreshold,
+    [scroll.backgroundColorStart, scroll.backgroundColorEnd]
+  );
 
   useEffect(() => {
     if (!navRef.current) return;
@@ -71,7 +108,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="min-h-screen w-full bg-orange-500 text-white">
+    <main className={`min-h-screen w-full ${colors.background} ${colors.text.primary}`}>
       <motion.section
         ref={navRef}
         style={{ backgroundColor }}
@@ -85,14 +122,14 @@ export default function Page() {
           <motion.button
             whileHover={{ scale: 1.05, x: 5 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-white text-orange-500 px-6 py-3 rounded-lg font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all nav-item"
+            className={`${colors.buttons.category} px-6 py-3 rounded-lg font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all nav-item`}
           >
             <div className="w-5 h-5 flex flex-col gap-1">
               <div className="w-full h-0.5 bg-orange-500"></div>
               <div className="w-full h-0.5 bg-orange-500"></div>
               <div className="w-full h-0.5 bg-orange-500"></div>
             </div>
-            <span>All Categories</span>
+            <span>{ui.categoryButton}</span>
             <motion.div
               animate={{ rotate: [0, 180, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
@@ -107,7 +144,7 @@ export default function Page() {
               <motion.a
                 key={index}
                 href="#"
-                className="nav-item text-white font-medium hover:text-orange-100 transition-colors flex items-center gap-1 relative group"
+                className={`nav-item ${colors.text.primary} font-medium ${colors.text.hover} transition-colors flex items-center gap-1 relative group`}
                 onMouseEnter={() => setHoveredItem(index)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
@@ -121,7 +158,7 @@ export default function Page() {
                   </motion.div>
                 )}
                 <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 ${colors.nav.underline}`}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: hoveredItem === index ? 1 : 0 }}
                   transition={{ duration: 0.3 }}
@@ -134,14 +171,13 @@ export default function Page() {
           <motion.button
             whileHover={{ scale: 1.05, x: 5 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-white text-orange-500 px-6 py-3 rounded-lg font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all nav-item"
+            className={`${colors.buttons.shop} px-6 py-3 rounded-lg font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all nav-item`}
           >
             <ShoppingBag className="w-4 h-4" />
-            Shop now
+            {ui.shopButton}
           </motion.button>
         </div>
       </motion.section>
     </main>
   );
 }
-

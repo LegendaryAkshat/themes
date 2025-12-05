@@ -4,94 +4,146 @@ import { motion } from "framer-motion";
 import { MessageSquare, Plus, Clock, CheckCircle } from "lucide-react";
 import { useState } from "react";
 
-export default function Page() {
-  const [tickets, setTickets] = useState([
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gray-50",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600"
+    },
+    buttons: {
+      primary: "bg-blue-600 hover:bg-blue-700 text-white"
+    },
+    icons: {
+      ticket: "bg-blue-100 text-blue-600"
+    },
+    status: {
+      open: "bg-blue-100 text-blue-800",
+      inProgress: "bg-yellow-100 text-yellow-800",
+      resolved: "bg-green-100 text-green-800"
+    }
+  },
+  
+  // Page Header
+  header: {
+    title: "Support Tickets"
+  },
+  
+  // Tickets (Edit tickets here!)
+  tickets: [
     {
       id: "#12345",
       subject: "Order Delivery Issue",
       status: "Open",
       date: "March 15, 2024",
-      lastUpdate: "2 hours ago"
+      lastUpdate: "2 hours ago",
+      link: "/ecomus-ticket-details"
     },
     {
       id: "#12344",
       subject: "Product Return Request",
       status: "In Progress",
       date: "March 12, 2024",
-      lastUpdate: "1 day ago"
+      lastUpdate: "1 day ago",
+      link: "/ecomus-ticket-details"
     },
     {
       id: "#12343",
       subject: "Payment Refund",
       status: "Resolved",
       date: "March 10, 2024",
-      lastUpdate: "3 days ago"
+      lastUpdate: "3 days ago",
+      link: "/ecomus-ticket-details"
     }
-  ]);
+  ],
+  
+  // Actions
+  actions: {
+    newTicket: {
+      text: "New Ticket",
+      icon: "Plus"
+    }
+  }
+};
+
+export default function Page() {
+  const [tickets, setTickets] = useState(pageConfig.tickets);
+  const { colors, header, tickets: initialTickets, actions } = pageConfig;
 
   const getStatusColor = (status) => {
-    switch (status) {
-      case "Open": return "bg-blue-100 text-blue-800";
-      case "In Progress": return "bg-yellow-100 text-yellow-800";
-      case "Resolved": return "bg-green-100 text-green-800";
-      default: return "bg-gray-100 text-gray-800";
-    }
+    const statusKey = status.toLowerCase().replace(/\s+/g, '');
+    return colors.status[statusKey] || colors.status.open;
+  };
+
+  const iconMap = {
+    MessageSquare,
+    Plus,
+    Clock,
+    CheckCircle
   };
 
   return (
-    <main className="min-h-screen w-full bg-gray-50">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex items-center justify-between mb-8">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-3xl font-bold text-gray-900"
+            className={`text-3xl font-bold ${colors.text.primary}`}
           >
-            Support Tickets
+            {header.title}
           </motion.h1>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
+            className={`${colors.buttons.primary} px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2`}
           >
-            <Plus className="w-5 h-5" />
-            New Ticket
+            {(() => {
+              const PlusIcon = iconMap[actions.newTicket.icon];
+              return <PlusIcon className="w-5 h-5" />;
+            })()}
+            {actions.newTicket.text}
           </motion.button>
         </div>
 
         <div className="space-y-4">
           {tickets.map((ticket, index) => (
-            <motion.div
+            <motion.a
               key={ticket.id}
+              href={ticket.link}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all cursor-pointer"
+              className={`${colors.card} rounded-lg shadow-md p-6 hover:shadow-lg transition-all cursor-pointer block`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-100 rounded-lg">
-                    <MessageSquare className="w-6 h-6 text-blue-600" />
+                  <div className={`p-3 ${colors.icons.ticket} rounded-lg`}>
+                    <MessageSquare className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{ticket.subject}</h3>
-                    <p className="text-sm text-gray-600">Ticket {ticket.id}</p>
-                    <p className="text-sm text-gray-500">Created: {ticket.date}</p>
+                    <h3 className={`font-semibold ${colors.text.primary} mb-1`}>{ticket.subject}</h3>
+                    <p className={`text-sm ${colors.text.secondary}`}>Ticket {ticket.id}</p>
+                    <p className={`text-sm ${colors.text.secondary}`}>Created: {ticket.date}</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 ${getStatusColor(ticket.status)}`}>
                     {ticket.status}
                   </span>
-                  <p className="text-sm text-gray-500">Last update: {ticket.lastUpdate}</p>
+                  <p className={`text-sm ${colors.text.secondary}`}>Last update: {ticket.lastUpdate}</p>
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>
     </main>
   );
 }
-

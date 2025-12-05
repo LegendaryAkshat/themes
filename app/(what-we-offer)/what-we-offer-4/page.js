@@ -3,12 +3,52 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight, Sparkles, Star } from "lucide-react";
 
-export default function Page() {
-  const packages = [
+// ============================================
+// PAGE CONFIGURATION - Edit everything here!
+// ============================================
+const pageConfig = {
+  // Colors & Theme
+  colors: {
+    background: "bg-gradient-to-br from-gray-50 via-white to-indigo-50/30",
+    card: "bg-white",
+    text: {
+      primary: "text-gray-900",
+      secondary: "text-gray-600",
+      light: "text-gray-500"
+    },
+    badges: {
+      icon: "text-indigo-600",
+      text: "text-indigo-600"
+    },
+    gradients: {
+      title: "bg-gradient-to-r from-indigo-600 to-purple-600",
+      closing: "bg-gradient-to-r from-indigo-600 to-purple-600"
+    },
+    rings: {
+      popular: "ring-4 ring-purple-500 ring-opacity-50"
+    }
+  },
+  
+  // Page Header
+  header: {
+    badge: {
+      text: "Our Offerings",
+      icon: "Sparkles"
+    },
+    title: {
+      line1: "Solutions for",
+      line2: "Every Stage"
+    },
+    description: "Choose the package that fits your needs, with the flexibility to grow as you do."
+  },
+  
+  // Packages (Edit packages here!)
+  packages: [
     {
       name: "Essential",
       description: "Perfect for getting started",
       price: "Starting at",
+      priceValue: "$99",
       features: [
         "Core functionality",
         "Email support",
@@ -22,6 +62,7 @@ export default function Page() {
       name: "Professional",
       description: "For growing businesses",
       price: "Starting at",
+      priceValue: "$99",
       features: [
         "All Essential features",
         "Priority support",
@@ -36,6 +77,7 @@ export default function Page() {
       name: "Enterprise",
       description: "For large organizations",
       price: "Custom pricing",
+      priceValue: "Custom",
       features: [
         "All Professional features",
         "24/7 phone support",
@@ -47,12 +89,27 @@ export default function Page() {
       gradient: "from-orange-500 to-red-500",
       popular: false
     }
-  ];
+  ],
+  
+  // Bottom Note
+  bottomNote: {
+    text: "All packages include our commitment to excellence, continuous updates, and dedicated support to help you succeed."
+  }
+};
+
+export default function Page() {
+  const { colors, header, packages, bottomNote } = pageConfig;
+
+  const iconMap = {
+    CheckCircle2,
+    ArrowRight,
+    Sparkles,
+    Star
+  };
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-gray-50 via-white to-indigo-50/30">
+    <main className={`min-h-screen w-full ${colors.background}`}>
       <section className="px-6 py-24 max-w-7xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,23 +122,25 @@ export default function Page() {
             transition={{ delay: 0.2, type: "spring" }}
             className="inline-flex items-center gap-2 mb-6"
           >
-            <Sparkles className="w-6 h-6 text-indigo-600" />
-            <span className="text-sm uppercase tracking-wider text-indigo-600 font-semibold">
-              Our Offerings
+            {(() => {
+              const SparklesIcon = iconMap[header.badge.icon];
+              return <SparklesIcon className={`w-6 h-6 ${colors.badges.icon}`} />;
+            })()}
+            <span className={`text-sm uppercase tracking-wider ${colors.badges.text} font-semibold`}>
+              {header.badge.text}
             </span>
           </motion.div>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-            Solutions for
-            <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
-              Every Stage
+          <h1 className={`text-5xl md:text-7xl font-bold ${colors.text.primary} mb-6`}>
+            {header.title.line1}
+            <span className={`block bg-clip-text text-transparent ${colors.gradients.title}`}>
+              {header.title.line2}
             </span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Choose the package that fits your needs, with the flexibility to grow as you do.
+          <p className={`text-xl ${colors.text.secondary} max-w-3xl mx-auto leading-relaxed`}>
+            {header.description}
           </p>
         </motion.div>
 
-        {/* Packages */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           {packages.map((pkg, index) => (
             <motion.div
@@ -91,28 +150,26 @@ export default function Page() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
               whileHover={{ y: -10, scale: 1.02 }}
-              className={`group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all overflow-hidden ${
-                pkg.popular ? "ring-4 ring-purple-500 ring-opacity-50" : ""
+              className={`group relative ${colors.card} rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all overflow-hidden ${
+                pkg.popular ? colors.rings.popular : ""
               }`}
             >
-              {/* Popular Badge */}
               {pkg.popular && (
-                <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-bl-2xl rounded-tr-3xl text-sm font-semibold flex items-center gap-1">
+                <div className={`absolute top-0 right-0 bg-gradient-to-r ${pkg.gradient} text-white px-4 py-2 rounded-bl-2xl rounded-tr-3xl text-sm font-semibold flex items-center gap-1`}>
                   <Star className="w-4 h-4 fill-current" />
                   Most Popular
                 </div>
               )}
 
-              {/* Gradient Header */}
               <div className={`h-2 bg-gradient-to-r ${pkg.gradient} mb-6 rounded-full`} />
 
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
-              <p className="text-gray-600 mb-6">{pkg.description}</p>
+              <h3 className={`text-3xl font-bold ${colors.text.primary} mb-2`}>{pkg.name}</h3>
+              <p className={`${colors.text.secondary} mb-6`}>{pkg.description}</p>
 
               <div className="mb-6">
-                <div className="text-sm text-gray-500 mb-1">{pkg.price}</div>
-                <div className="text-4xl font-bold text-gray-900">
-                  {pkg.price === "Custom pricing" ? "Custom" : "$99"}
+                <div className={`text-sm ${colors.text.light} mb-1`}>{pkg.price}</div>
+                <div className={`text-4xl font-bold ${colors.text.primary}`}>
+                  {pkg.priceValue}
                 </div>
               </div>
 
@@ -127,7 +184,7 @@ export default function Page() {
                     className="flex items-start gap-3"
                   >
                     <CheckCircle2 className={`w-5 h-5 text-transparent bg-gradient-to-br ${pkg.gradient} bg-clip-text flex-shrink-0 mt-0.5`} />
-                    <span className="text-gray-700">{feature}</span>
+                    <span className={colors.text.secondary}>{feature}</span>
                   </motion.li>
                 ))}
               </ul>
@@ -144,7 +201,6 @@ export default function Page() {
           ))}
         </div>
 
-        {/* Bottom Note */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -152,10 +208,9 @@ export default function Page() {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <div className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-2xl">
-            <p className="text-xl font-light leading-relaxed max-w-3xl">
-              All packages include our commitment to excellence, continuous updates, 
-              and dedicated support to help you succeed.
+          <div className={`inline-block ${colors.gradients.closing} rounded-2xl p-8 text-white shadow-2xl`}>
+            <p className={`text-xl font-light leading-relaxed max-w-3xl`}>
+              {bottomNote.text}
             </p>
           </div>
         </motion.div>
@@ -163,4 +218,3 @@ export default function Page() {
     </main>
   );
 }
-
